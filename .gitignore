@@ -1,0 +1,16 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 依赖与构建产物（技术栈确定后补充）
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+.env
