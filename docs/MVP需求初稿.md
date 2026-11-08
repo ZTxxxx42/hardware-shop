@@ -95,4 +95,4 @@
 
 ## 8. 技术方向（待架构阶段确定）
 
-仅记录候选，最终由架构设计阶段确定：前端（Vue / React 或服务端模板）、后端（Node / Python / Java）、数据库（MySQL / PostgreSQL）、部署（云主机 / Docker）。本期单体优先，不做复杂微服务。
+技术方向已由架构设计阶段确定（见 `docs/architecture/架构设计.md`）：前端 Vue 3 + TypeScript、后端 Python FastAPI、数据库 PostgreSQL 16、部署 Docker Compose 单机。本期单体优先，不做复杂微服务。
