@@ -80,7 +80,7 @@ def update_category(category_id: int, payload: CategoryUpdate, db: Session = Dep
     return CategoryOut.model_validate(c)
 
 
-@router.delete("/categories/{category_id}", status_code=204)
+@router.delete("/categories/{category_id}", status_code=204, response_model=None)
 def delete_category(category_id: int, db: Session = Depends(get_db)) -> None:
     c = db.get(Category, category_id)
     if c is None:

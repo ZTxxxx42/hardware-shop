@@ -71,7 +71,7 @@ def update_address(
     return member_service.update_address(db, user, address_id, payload)
 
 
-@router.delete("/addresses/{address_id}", status_code=204)
+@router.delete("/addresses/{address_id}", status_code=204, response_model=None)
 def delete_address(
     address_id: int,
     db: Session = Depends(get_db),
