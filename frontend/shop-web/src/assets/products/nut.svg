@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+ <defs>
+  <linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fcfeff"/><stop offset=".2" stop-color="#9aa8b2"/><stop offset=".38" stop-color="#eef3f6"/><stop offset=".65" stop-color="#6f7e89"/><stop offset=".82" stop-color="#e9eef1"/><stop offset="1" stop-color="#7c8992"/></linearGradient>
+  <linearGradient id="side" x1="0" x2="1"><stop stop-color="#45535e"/><stop offset=".5" stop-color="#bec8cf"/><stop offset="1" stop-color="#53616b"/></linearGradient>
+  <radialGradient id="hole"><stop offset=".45" stop-color="#1f2d36"/><stop offset=".58" stop-color="#77858e"/><stop offset=".72" stop-color="#e8edf0"/><stop offset="1" stop-color="#5a6872"/></radialGradient>
+  <filter id="s" x="-40%" y="-40%" width="180%" height="200%"><feDropShadow dx="0" dy="14" stdDeviation="9" flood-color="#1c3448" flood-opacity=".25"/></filter>
+ </defs>
+ <ellipse cx="242" cy="304" rx="158" ry="19" fill="#5e7487" opacity=".13"/>
+ <g filter="url(#s)">
+  <g transform="translate(53 113) rotate(-12 100 90)">
+   <path d="m23 55 46-43h105l45 43-13 105-43 35H75l-45-39z" fill="url(#side)"/>
+   <path fill="url(#m)" fill-rule="evenodd" stroke="#7d8b94" stroke-width="2" d="m23 32 46-32h105l45 32-45 76H69zm50 22 22-14h50l22 14-22 35H95z"/>
+   <path d="m73 54 22-14h50l22 14-22 35H95z" fill="url(#hole)"/>
+   <path d="m23 32 46 22v76L30 156z" fill="#e9eef1" opacity=".35"/>
+  </g>
+  <g transform="translate(237 44) rotate(15 90 80)">
+   <path d="m16 50 40-38h96l41 38-12 93-39 32H68l-41-35z" fill="url(#side)"/>
+   <path fill="url(#m)" fill-rule="evenodd" stroke="#7d8b94" stroke-width="2" d="m16 29 40-29h96l41 29-41 69H56zm45 20 20-13h46l20 13-20 32H81z"/>
+   <path d="m61 49 20-13h46l20 13-20 32H81z" fill="url(#hole)"/>
+  </g>
+  <g transform="translate(225 185) rotate(8 75 60)">
+   <path d="m12 39 34-31h82l35 31-10 77-33 27H58L25 119z" fill="url(#side)"/>
+   <path fill="url(#m)" fill-rule="evenodd" stroke="#7d8b94" stroke-width="2" d="m12 24 34-24h82l35 24-35 57H47zm39 17 17-11h39l17 11-17 27H68z"/>
+   <path d="m51 41 17-11h39l17 11-17 27H68z" fill="url(#hole)"/>
+  </g>
+ </g>
+</svg>

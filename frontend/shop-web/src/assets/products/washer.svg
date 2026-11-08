@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+ <defs>
+  <linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5f6e79"/><stop offset=".18" stop-color="#f8fbfd"/><stop offset=".35" stop-color="#9ba9b3"/><stop offset=".55" stop-color="#fff"/><stop offset=".78" stop-color="#71808b"/><stop offset="1" stop-color="#e8eef2"/></linearGradient>
+  <linearGradient id="edge" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#7e8d97"/><stop offset="1" stop-color="#35434d"/></linearGradient>
+  <filter id="s" x="-30%" y="-50%" width="160%" height="220%"><feDropShadow dx="0" dy="13" stdDeviation="8" flood-color="#203c52" flood-opacity=".23"/></filter>
+ </defs>
+ <ellipse cx="240" cy="296" rx="172" ry="19" fill="#6f8496" opacity=".13"/>
+ <g filter="url(#s)">
+  <g transform="translate(40 32) rotate(-10 170 130)">
+   <path fill="url(#edge)" fill-rule="evenodd" d="M318 126c0 69-67 119-150 119S18 195 18 126v20c0 69 67 119 150 119s150-50 150-119zm-213 13c0 29 28 51 63 51s63-22 63-51v20c0 29-28 51-63 51s-63-22-63-51z"/>
+   <path fill="url(#m)" fill-rule="evenodd" stroke="#84919a" stroke-width="2" d="M318 126c0 69-67 119-150 119S18 195 18 126 85 7 168 7s150 50 150 119zm-213 13c0 29 28 51 63 51s63-22 63-51-28-51-63-51-63 22-63 51z"/>
+   <ellipse cx="168" cy="126" rx="152" ry="119" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="3"/>
+  </g>
+  <g transform="translate(254 180) rotate(12 80 70)">
+   <path fill="url(#edge)" fill-rule="evenodd" d="M156 66c0 38-34 65-76 65S4 104 4 66v13c0 38 34 65 76 65s76-27 76-65zM54 70c0 12 12 22 26 22s26-10 26-22v13c0 12-12 22-26 22S54 95 54 83z"/>
+   <path fill="url(#m)" fill-rule="evenodd" stroke="#84919a" stroke-width="2" d="M156 66c0 38-34 65-76 65S4 104 4 66 38 1 80 1s76 27 76 65zM54 70c0 12 12 22 26 22s26-10 26-22-12-22-26-22-26 10-26 22z"/>
+  </g>
+ </g>
+</svg>
