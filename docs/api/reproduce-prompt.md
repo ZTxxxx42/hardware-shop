@@ -27,7 +27,7 @@
 
 ## 3. 技术栈
 
-FastAPI 0.115+ / Python 3.12 / Pydantic v2 / SQLAlchemy 2.0 / JWT(PyJWT 或 python-jose)+ passlib[bcrypt] / pydantic-settings。
+FastAPI 0.115+ / Python 3.13 / Pydantic v2 / SQLAlchemy 2.0 / JWT(PyJWT 或 python-jose)+ passlib[bcrypt] / pydantic-settings。
 
 `requirements.txt` 至少含:fastapi、uvicorn[standard]、sqlalchemy、alembic、psycopg[binary]、pydantic-settings、PyJWT、passlib[bcrypt]、python-multipart。**passlib 与 bcrypt 4.1+ 不兼容,需固定 `bcrypt==4.0.1`。**
 
