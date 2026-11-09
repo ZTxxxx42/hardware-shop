@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/hardware_shop"
 
     # 前端双 SPA 白名单(买家端/管理端),JSON 数组格式
-    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174"]
+    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5174"]
 
     # 支付网关占位(MVP 联调时替换为真实商户配置)
     wechat_pay_api_v3_key: str = ""
