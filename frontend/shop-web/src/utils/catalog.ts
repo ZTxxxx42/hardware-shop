@@ -32,6 +32,10 @@ export function formatPrice(value: string): string {
   return amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
+export function isZeroAmount(value: string): boolean {
+  return value === '' || value === '0' || value === '0.00'
+}
+
 export function getProductStatus(status: string): string {
   const statuses: Record<string, string> = {
     ON_SALE: '在售',

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowDown, Menu, Phone, Search, User } from '@element-plus/icons-vue'
+import { ArrowDown, Menu, Phone, Search, ShoppingCart, User } from '@element-plus/icons-vue'
 import BrandLogo from '@/components/BrandLogo.vue'
+import { useCartStore } from '@/stores/cart'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const cartStore = useCartStore()
+const userStore = useUserStore()
 const keyword = ref('')
 const drawerOpen = ref(false)
 const navItems = [
@@ -49,6 +53,15 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
         <el-icon :size="29"><Phone /></el-icon>
         <span><strong>400-123-4567</strong><small>全国服务热线</small></span>
       </a>
+      <div class="header-tools">
+        <RouterLink to="/cart" class="tool-link" aria-label="购物车">
+          <el-icon :size="22"><ShoppingCart /></el-icon>
+          <span v-if="cartStore.totalQuantity" class="tool-badge">{{ cartStore.totalQuantity }}</span>
+        </RouterLink>
+        <RouterLink to="/account" class="tool-link" aria-label="个人中心">
+          <el-icon :size="22"><User /></el-icon>
+        </RouterLink>
+      </div>
     </div>
 
     <div class="mobile-header">
@@ -56,6 +69,12 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
         <RouterLink to="/" aria-label="恒泰五金商贸首页"><BrandLogo /></RouterLink>
         <div class="mobile-actions">
           <a href="tel:400-123-4567" aria-label="拨打客服热线"><el-icon :size="21"><Phone /></el-icon></a>
+          <RouterLink to="/cart" aria-label="购物车">
+            <span class="mobile-cart">
+              <el-icon :size="21"><ShoppingCart /></el-icon>
+              <span v-if="cartStore.totalQuantity" class="mobile-badge">{{ cartStore.totalQuantity }}</span>
+            </span>
+          </RouterLink>
           <RouterLink to="/account" aria-label="个人中心"><el-icon :size="21"><User /></el-icon></RouterLink>
           <button type="button" aria-label="打开导航菜单" @click="drawerOpen = true"><el-icon :size="23"><Menu /></el-icon></button>
         </div>
@@ -70,8 +89,10 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
     <el-drawer v-model="drawerOpen" title="网站导航" direction="rtl" size="82%">
       <nav class="drawer-nav" aria-label="移动端导航">
         <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" :class="{ active: isActive(item.to) }">{{ item.label }}</RouterLink>
+        <RouterLink to="/cart">购物车</RouterLink>
         <RouterLink to="/orders">订单中心</RouterLink>
-        <RouterLink to="/login">登录 / 注册</RouterLink>
+        <RouterLink to="/addresses">地址管理</RouterLink>
+        <RouterLink to="/account">{{ userStore.isLoggedIn ? '个人中心' : '登录 / 注册' }}</RouterLink>
       </nav>
       <a class="drawer-phone" href="tel:400-123-4567"><el-icon><Phone /></el-icon>400-123-4567</a>
     </el-drawer>
@@ -94,6 +115,10 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
 .header-phone span { display: flex; flex-direction: column; }
 .header-phone strong { color: var(--brand-ink); font-family: Arial, sans-serif; font-size: 15px; line-height: 1.25; }
 .header-phone small { color: #8995a2; font-size: 10px; }
+.header-tools { display: flex; align-items: center; gap: 7px; }
+.tool-link { position: relative; display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; color: #4e6073; background: #f3f7fb; transition: color .2s, background .2s; }
+.tool-link:hover { color: var(--brand); background: var(--brand-light); }
+.tool-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px; border: 2px solid #fff; border-radius: 9px; color: #fff; background: #ef5350; font-size: 10px; line-height: 13px; text-align: center; }
 .mobile-header { display: none; }
 @media (max-width: 1180px) {
   .desktop-header { gap: 18px; }
@@ -112,6 +137,8 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
   .mobile-top { display: flex; align-items: center; justify-content: space-between; }
   .mobile-actions { display: flex; align-items: center; gap: 4px; }
   .mobile-actions a, .mobile-actions button { display: grid; width: 34px; height: 34px; place-items: center; border: 0; border-radius: 50%; color: #4e6073; background: transparent; }
+  .mobile-cart { position: relative; display: grid; place-items: center; }
+  .mobile-badge { position: absolute; top: -8px; left: 13px; min-width: 16px; height: 16px; padding: 0 4px; border: 2px solid #fff; border-radius: 9px; color: #fff; background: #ef5350; font-size: 9px; line-height: 12px; text-align: center; }
   .mobile-search { display: flex; align-items: center; height: 48px; margin-top: 14px; padding: 0 7px 0 15px; border: 1px solid rgb(255 255 255 / 80%); border-radius: 25px; color: #8a9aad; background: rgb(255 255 255 / 82%); box-shadow: 0 5px 20px rgb(61 105 150 / 5%); }
   .mobile-search input { min-width: 0; flex: 1; height: 100%; padding: 0 10px; border: 0; outline: 0; background: transparent; font-size: 14px; }
   .mobile-search input::-webkit-search-cancel-button { display: none; }

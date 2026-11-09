@@ -17,6 +17,7 @@ http.interceptors.response.use(
   (error: unknown) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       localStorage.removeItem('hengtai_access_token')
+      window.dispatchEvent(new Event('auth:unauthorized'))
     }
     return Promise.reject(error)
   },

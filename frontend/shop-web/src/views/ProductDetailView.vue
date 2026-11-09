@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { ArrowRight } from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { ArrowRight, ShoppingCart } from '@element-plus/icons-vue'
 import { catalogApi } from '@/api/catalog'
 import { getErrorMessage } from '@/api/http'
 import type { ProductDetail } from '@/types/catalog'
 import { formatPrice, getProductStatus } from '@/utils/catalog'
+import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
 import ProductArtwork from '@/components/ProductArtwork.vue'
 import RequestState from '@/components/RequestState.vue'
 
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+const cartStore = useCartStore()
 const product = ref<ProductDetail | null>(null)
 const loading = ref(true)
 const error = ref('')
+const quantity = ref(1)
+const adding = ref(false)
 let requestId = 0
 
 function positiveInteger(value: unknown): number | undefined {
@@ -46,6 +54,27 @@ async function loadProduct() {
     error.value = getErrorMessage(requestError, '商品详情加载失败，请稍后重试')
   } finally {
     if (currentRequestId === requestId) loading.value = false
+  }
+}
+
+async function addToCart() {
+  const current = product.value
+  if (!current || current.status !== 'ON_SALE') {
+    ElMessage.warning('该商品暂不可售')
+    return
+  }
+  if (!userStore.isLoggedIn) {
+    await router.push({ name: 'login', query: { redirect: route.fullPath } })
+    return
+  }
+  adding.value = true
+  try {
+    await cartStore.add(current.id, quantity.value)
+    ElMessage.success('已加入购物车')
+  } catch (requestError) {
+    ElMessage.error(getErrorMessage(requestError, '加入购物车失败，请稍后重试'))
+  } finally {
+    adding.value = false
   }
 }
 
@@ -88,8 +117,14 @@ watch(productId, loadProduct, { immediate: true })
               <div><dt>商品编号</dt><dd>{{ product.id }}</dd></div>
               <div><dt>所属分类</dt><dd><RouterLink :to="{ path: '/products', query: { category: product.category_id } }">查看同类商品</RouterLink></dd></div>
             </dl>
+            <div class="buy-box">
+              <el-input-number v-model="quantity" :min="1" :max="product.stock || 1" :disabled="product.status !== 'ON_SALE'" size="large" aria-label="采购数量" />
+              <el-button type="primary" size="large" :loading="adding" :disabled="product.status !== 'ON_SALE'" @click="addToCart">
+                <el-icon style="margin-right: 6px"><ShoppingCart /></el-icon>加入购物车
+              </el-button>
+            </div>
             <div class="detail-actions">
-              <RouterLink class="primary-link" :to="{ path: '/contact', query: { product: product.name } }">询价咨询<el-icon><ArrowRight /></el-icon></RouterLink>
+              <RouterLink class="secondary-link" :to="{ path: '/contact', query: { product: product.name } }">询价咨询<el-icon><ArrowRight /></el-icon></RouterLink>
               <RouterLink class="secondary-link" to="/products">返回产品中心</RouterLink>
             </div>
           </div>
@@ -130,7 +165,9 @@ watch(productId, loadProduct, { immediate: true })
 .quick-specs dt { color: #95a2af; font-size: 11px; }
 .quick-specs dd { margin: 3px 0 0; color: #3c4e61; font-size: 13px; }
 .quick-specs a { color: var(--brand); }
-.detail-actions { display: flex; align-items: center; gap: 24px; margin-top: 30px; }
+.detail-actions { display: flex; align-items: center; gap: 24px; margin-top: 16px; }
+.buy-box { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+.buy-box :deep(.el-input-number) { width: 150px; }
 .secondary-link { color: #68798c; font-size: 13px; }
 .secondary-link:hover { color: var(--brand); }
 .spec-section { margin-top: 24px; padding: 28px 32px; border: 1px solid #e7edf3; border-radius: 12px; background: #fff; }

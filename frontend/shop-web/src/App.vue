@@ -1,7 +1,17 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import SiteHeader from '@/components/layout/SiteHeader.vue'
 import SiteFooter from '@/components/layout/SiteFooter.vue'
 import MobileTabbar from '@/components/layout/MobileTabbar.vue'
+import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
+
+const userStore = useUserStore()
+const cartStore = useCartStore()
+
+onMounted(() => {
+  if (userStore.isLoggedIn) void cartStore.load().catch(() => {})
+})
 </script>
 
 <template>
