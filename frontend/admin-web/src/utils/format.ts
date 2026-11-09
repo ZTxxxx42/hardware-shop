@@ -6,6 +6,13 @@ export function formatMoney(value: number) {
   return `¥${value.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
+export function formatDateTime(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  const pad = (part: number) => String(part).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
+}
+
 export const levelMeta: Record<CustomerLevel, { label: string; type: TagType }> = {
   retail: { label: '零售', type: 'info' },
   wholesale: { label: '批发', type: 'primary' },

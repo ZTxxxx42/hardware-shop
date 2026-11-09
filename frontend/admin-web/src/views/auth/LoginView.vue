@@ -5,6 +5,7 @@ import { Lock, User } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
+import { showRequestError } from '@/api/error'
 import logoUrl from '@/assets/logo-mark.svg'
 
 const router = useRouter()
@@ -29,6 +30,8 @@ async function submit() {
     ElMessage.success('登录成功')
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/products'
     await router.replace(redirect)
+  } catch (error) {
+    showRequestError(error, '登录失败，请检查账号与密码')
   } finally {
     loading.value = false
   }
@@ -62,7 +65,7 @@ async function submit() {
           </el-form-item>
           <el-button class="login-button" type="primary" native-type="submit" :loading="loading">登录管理后台</el-button>
         </el-form>
-        <div class="demo-note"><strong>脚手架演示</strong><span>账号 admin，密码 admin123。当前为模拟登录，不会请求后端。</span></div>
+        <div class="demo-note"><strong>管理员登录</strong><span>使用后端管理员账号 admin，密码 admin123。登录状态由 JWT 凭证维持。</span></div>
       </div>
       <footer>恒固五金商贸 · MVP</footer>
     </section>

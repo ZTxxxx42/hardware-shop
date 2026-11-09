@@ -17,7 +17,8 @@ http.interceptors.response.use(
   (error: unknown) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       localStorage.removeItem('admin_access_token')
-      if (window.location.pathname !== '/login') window.location.assign('/login')
+      localStorage.removeItem('admin_user')
+      if (window.location.pathname !== '/login') window.location.replace('/login')
     }
     return Promise.reject(error)
   },

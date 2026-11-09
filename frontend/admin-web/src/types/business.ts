@@ -8,7 +8,7 @@ export interface Category {
   name: string
   sort: number
   productCount: number
-  status: 'ENABLED' | 'DISABLED'
+  status?: 'ENABLED' | 'DISABLED'
 }
 
 export interface Product {
@@ -39,7 +39,7 @@ export interface Customer {
 export interface OrderItem {
   id: number
   productName: string
-  model: string
+  model?: string
   price: number
   quantity: number
   subtotal: number
@@ -48,28 +48,29 @@ export interface OrderItem {
 export interface Order {
   id: number
   orderNo: string
-  customerName: string
-  level: CustomerLevel
+  customerName?: string
+  level?: CustomerLevel
   status: OrderStatus
   productAmount: number
   freightAmount: number
   totalAmount: number
   items: OrderItem[]
-  receiver: string
-  phone: string
-  address: string
+  receiver?: string
+  phone?: string
+  address?: string
   createdAt: string
   paidAt?: string
 }
 
 export interface Payment {
   id: number
+  orderId?: number
   orderNo: string
   tradeNo: string
   channel: 'wechat' | 'alipay'
   amount: number
-  orderAmount: number
-  status: 'SUCCESS' | 'PENDING' | 'FAILED'
-  createdAt: string
+  orderAmount: number | null
+  status: 'SUCCESS' | 'PENDING' | 'FAILED' | 'CLOSED'
+  createdAt?: string
   paidAt?: string
 }

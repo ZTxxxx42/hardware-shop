@@ -62,7 +62,7 @@ onBeforeUnmount(() => media.removeEventListener('change', handleViewport))
           <el-icon><component :is="item.icon" /></el-icon><template #title>{{ item.title }}</template>
         </el-menu-item>
       </el-menu>
-      <div v-show="!isCollapsed || isMobile" class="sidebar-foot"><span class="status-dot" />示例数据环境</div>
+      <div v-show="!isCollapsed || isMobile" class="sidebar-foot"><span class="status-dot" />真实 API 环境</div>
     </aside>
     <section class="admin-workspace">
       <header class="admin-header">
@@ -73,9 +73,9 @@ onBeforeUnmount(() => media.removeEventListener('change', handleViewport))
           <el-breadcrumb separator="/"><el-breadcrumb-item>管理后台</el-breadcrumb-item><el-breadcrumb-item>{{ currentTitle }}</el-breadcrumb-item></el-breadcrumb>
         </div>
         <div class="header-right">
-          <span class="demo-badge">MVP 脚手架</span>
+          <span class="demo-badge">管理后台</span>
           <el-dropdown trigger="click" @command="handleCommand">
-            <button class="user-trigger"><span class="user-avatar">管</span><span class="user-copy"><strong>{{ auth.user?.name }}</strong><small>系统管理员</small></span></button>
+            <button class="user-trigger"><span class="user-avatar">管</span><span class="user-copy"><strong>{{ auth.user?.name ?? '管理员' }}</strong><small>系统管理员</small></span></button>
             <template #dropdown><el-dropdown-menu><el-dropdown-item disabled>{{ auth.user?.username }}</el-dropdown-item><el-dropdown-item divided command="logout">退出登录</el-dropdown-item></el-dropdown-menu></template>
           </el-dropdown>
         </div>
