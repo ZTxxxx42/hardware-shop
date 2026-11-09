@@ -23,3 +23,17 @@ http.interceptors.response.use(
 )
 
 export default http
+
+
+interface ApiErrorBody {
+  message?: string
+}
+
+export function getErrorMessage(error: unknown, fallback: string): string {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as ApiErrorBody | undefined
+    if (data?.message) return data.message
+    if (error.code === 'ECONNABORTED') return '请求超时，请检查网络后重试'
+  }
+  return fallback
+}

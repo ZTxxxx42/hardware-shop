@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { CategoryIcon } from '@/types/catalog'
+import { computed } from 'vue'
+import type { CategoryIconName } from '@/types/catalog'
 import wrenchUrl from '@/assets/categories/wrench.svg'
 import drillUrl from '@/assets/categories/drill.svg'
 import fastenerUrl from '@/assets/categories/fastener.svg'
@@ -8,12 +9,13 @@ import bearingUrl from '@/assets/categories/bearing.svg'
 import profileUrl from '@/assets/categories/profile.svg'
 import gridUrl from '@/assets/categories/grid.svg'
 
-const props = defineProps<{ name: CategoryIcon }>()
-const icons: Record<CategoryIcon, string> = { wrench: wrenchUrl, drill: drillUrl, fastener: fastenerUrl, hinge: hingeUrl, bearing: bearingUrl, profile: profileUrl, grid: gridUrl }
+const props = defineProps<{ name: CategoryIconName }>()
+const icons: Record<CategoryIconName, string> = { wrench: wrenchUrl, drill: drillUrl, fastener: fastenerUrl, hinge: hingeUrl, bearing: bearingUrl, profile: profileUrl, grid: gridUrl }
+const source = computed(() => icons[props.name] ?? gridUrl)
 </script>
 
 <template>
-  <img class="category-icon" :src="icons[props.name]" alt="" width="80" height="80" loading="lazy" />
+  <img class="category-icon" :src="source" alt="" width="80" height="80" loading="lazy" />
 </template>
 
 <style scoped>

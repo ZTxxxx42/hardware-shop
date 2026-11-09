@@ -1,10 +1,33 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
-import { hotProducts } from '@/data/home'
+import { catalogApi } from '@/api/catalog'
+import { getErrorMessage } from '@/api/http'
+import type { Product } from '@/types/catalog'
 import ProductCard from '@/components/ProductCard.vue'
+import RequestState from '@/components/RequestState.vue'
 
-const desktopProducts = hotProducts.slice(0, 5)
-const mobileProducts = [hotProducts[0], hotProducts[5], hotProducts[1], hotProducts[2]].filter((product) => product !== undefined)
+const products = ref<Product[]>([])
+const loading = ref(true)
+const error = ref('')
+const desktopProducts = computed(() => products.value.slice(0, 5))
+const mobileProducts = computed(() => products.value.slice(0, 4))
+
+async function loadProducts() {
+  loading.value = true
+  error.value = ''
+  try {
+    const data = await catalogApi.products({ page: 1, page_size: 5 })
+    products.value = data.items
+  } catch (requestError) {
+    products.value = []
+    error.value = getErrorMessage(requestError, '热销商品加载失败，请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(loadProducts)
 </script>
 
 <template>
@@ -19,12 +42,23 @@ const mobileProducts = [hotProducts[0], hotProducts[5], hotProducts[1], hotProdu
         </div>
         <RouterLink class="text-link more-link" to="/products">查看更多<el-icon><ArrowRight /></el-icon></RouterLink>
       </div>
-      <div class="desktop-product-grid">
-        <ProductCard v-for="product in desktopProducts" :key="product.id" :product="product" />
-      </div>
-      <div class="mobile-product-grid">
-        <ProductCard v-for="product in mobileProducts" :key="product.id" :product="product" />
-      </div>
+      <RequestState
+        v-if="loading || error || products.length === 0"
+        :loading="loading"
+        :error="error"
+        :empty="!loading && !error"
+        loading-text="正在加载热销商品..."
+        empty-text="暂无热销商品"
+        @retry="loadProducts"
+      />
+      <template v-else>
+        <div class="desktop-product-grid">
+          <ProductCard v-for="product in desktopProducts" :key="product.id" :product="product" />
+        </div>
+        <div class="mobile-product-grid">
+          <ProductCard v-for="product in mobileProducts" :key="product.id" :product="product" />
+        </div>
+      </template>
     </div>
   </section>
 </template>

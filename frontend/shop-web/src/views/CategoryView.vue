@@ -1,7 +1,32 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
-import { categories } from '@/data/home'
+import { catalogApi } from '@/api/catalog'
+import { getErrorMessage } from '@/api/http'
+import type { Category } from '@/types/catalog'
+import { getCategoryDescription, getCategoryIcon } from '@/utils/catalog'
 import CategoryIcon from '@/components/CategoryIcon.vue'
+import RequestState from '@/components/RequestState.vue'
+
+const categories = ref<Category[]>([])
+const loading = ref(true)
+const error = ref('')
+
+async function loadCategories() {
+  loading.value = true
+  error.value = ''
+  try {
+    const data = await catalogApi.categories()
+    categories.value = [...data].sort((a, b) => a.sort - b.sort || a.id - b.id)
+  } catch (requestError) {
+    categories.value = []
+    error.value = getErrorMessage(requestError, '分类加载失败，请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(loadCategories)
 </script>
 
 <template>
@@ -9,10 +34,19 @@ import CategoryIcon from '@/components/CategoryIcon.vue'
     <div class="container">
       <nav class="breadcrumb" aria-label="面包屑"><RouterLink to="/">首页</RouterLink><span>/</span><span>产品分类</span></nav>
       <div class="page-title"><span>PRODUCT CATEGORIES</span><h1>产品分类</h1><p>多品类五金产品，一站式满足工程与生产采购需求</p></div>
-      <div class="category-grid">
+      <RequestState
+        v-if="loading || error || categories.length === 0"
+        :loading="loading"
+        :error="error"
+        :empty="!loading && !error"
+        loading-text="正在加载产品分类..."
+        empty-text="暂无产品分类"
+        @retry="loadCategories"
+      />
+      <div v-else class="category-grid">
         <RouterLink v-for="category in categories" :key="category.id" :to="{ path: '/products', query: { category: category.id } }" class="category-card">
-          <div class="category-art"><CategoryIcon :name="category.icon" /></div>
-          <div><h2>{{ category.name }}</h2><p>{{ category.description }}</p><span>查看产品<el-icon><ArrowRight /></el-icon></span></div>
+          <div class="category-art"><CategoryIcon :name="getCategoryIcon(category)" /></div>
+          <div><h2>{{ category.name }}</h2><p>{{ getCategoryDescription(category) }}</p><span>查看产品<el-icon><ArrowRight /></el-icon></span></div>
         </RouterLink>
       </div>
     </div>

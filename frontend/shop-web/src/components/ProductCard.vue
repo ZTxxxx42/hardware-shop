@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight } from '@element-plus/icons-vue'
 import type { Product } from '@/types/catalog'
+import { formatPrice } from '@/utils/catalog'
 import ProductArtwork from '@/components/ProductArtwork.vue'
 
 defineProps<{ product: Product }>()
@@ -9,13 +10,13 @@ defineProps<{ product: Product }>()
 <template>
   <article class="product-card">
     <RouterLink class="product-image" :to="`/products/${product.id}`" :aria-label="`查看${product.name}详情`">
-      <span v-if="product.tag" class="product-tag">{{ product.tag }}</span>
-      <ProductArtwork :type="product.artwork" :alt="product.name" />
+      <span v-if="product.status !== 'ON_SALE'" class="product-tag">暂不可售</span>
+      <ProductArtwork :slug="product.main_image" :alt="product.name" />
     </RouterLink>
     <div class="product-info">
       <RouterLink :to="`/products/${product.id}`"><h3>{{ product.name }}</h3></RouterLink>
-      <p class="product-model">规格：{{ product.model }}</p>
-      <p class="product-material">{{ product.material }}</p>
+      <p class="product-model">规格：{{ product.model || '详询客服' }}</p>
+      <p class="product-price"><span>¥</span>{{ formatPrice(product.price) }}</p>
       <RouterLink class="inquiry-link" :to="{ path: '/contact', query: { product: product.name } }">
         <span class="desktop-label">询价咨询</span><span class="mobile-label">立即询价</span><el-icon><ArrowRight /></el-icon>
       </RouterLink>
@@ -34,7 +35,8 @@ defineProps<{ product: Product }>()
 .product-info h3 { overflow: hidden; color: #1d2a37; font-size: 15px; font-weight: 650; line-height: 1.5; text-overflow: ellipsis; white-space: nowrap; }
 .product-info a:hover h3 { color: var(--brand); }
 .product-model { margin-top: 3px; color: #7c8792; font-size: 12px; }
-.product-material { margin: 2px 0 12px; color: #9aa4ae; font-size: 11px; }
+.product-price { margin: 2px 0 12px; color: #e45b32; font-family: Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 1.5; }
+.product-price span { margin-right: 2px; font-size: 12px; }
 .inquiry-link { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; height: 34px; border-radius: 5px; color: #fff; background: linear-gradient(110deg, #0875cf, #2498e5); font-size: 12px; font-weight: 600; transition: filter .2s; }
 .inquiry-link:hover { filter: brightness(1.08); }
 .mobile-label { display: none; }
@@ -45,9 +47,10 @@ defineProps<{ product: Product }>()
   .product-tag { display: none; }
   .product-info { display: flex; min-width: 0; flex-direction: column; justify-content: center; padding: 14px 9px 14px 2px; }
   .product-info h3 { display: -webkit-box; font-size: 12px; line-height: 1.5; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-  .product-model { margin-top: 8px; font-size: 10px; white-space: nowrap; }
-  .product-material { display: none; }
-  .inquiry-link { gap: 3px; height: 29px; margin-top: 12px; border-radius: 16px; font-size: 11px; }
+  .product-model { margin-top: 5px; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+  .product-price { margin: 0; font-size: 15px; }
+  .product-price span { font-size: 10px; }
+  .inquiry-link { gap: 3px; height: 29px; margin-top: 8px; border-radius: 16px; font-size: 11px; }
   .inquiry-link .el-icon { display: none; }
   .desktop-label { display: none; }
   .mobile-label { display: inline; }

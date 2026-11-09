@@ -1,12 +1,34 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { ArrowRight, Grid } from '@element-plus/icons-vue'
-import { categories } from '@/data/home'
+import { catalogApi } from '@/api/catalog'
+import { getErrorMessage } from '@/api/http'
+import type { Category } from '@/types/catalog'
+import { getCategoryDescription, getCategoryIcon } from '@/utils/catalog'
 import CategoryIcon from '@/components/CategoryIcon.vue'
+import RequestState from '@/components/RequestState.vue'
 
-const mobileCategories = [
-  ...categories.slice(0, 5),
-  { id: 0, name: '全部分类', icon: 'grid' as const, description: '查看全部商品' },
-]
+const categories = ref<Category[]>([])
+const loading = ref(true)
+const error = ref('')
+const desktopCategories = computed(() => categories.value.slice(0, 6))
+const mobileCategories = computed(() => categories.value.slice(0, 5))
+
+async function loadCategories() {
+  loading.value = true
+  error.value = ''
+  try {
+    const data = await catalogApi.categories()
+    categories.value = [...data].sort((a, b) => a.sort - b.sort || a.id - b.id)
+  } catch (requestError) {
+    categories.value = []
+    error.value = getErrorMessage(requestError, '分类加载失败，请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(loadCategories)
 </script>
 
 <template>
@@ -18,19 +40,35 @@ const mobileCategories = [
         <p>多品类 · 全覆盖</p>
         <RouterLink to="/categories" aria-label="查看全部分类"><el-icon><ArrowRight /></el-icon></RouterLink>
       </div>
-      <div class="desktop-categories">
-        <RouterLink v-for="category in categories" :key="category.id" class="category-item" :to="{ path: '/products', query: { category: category.id } }">
-          <div class="category-image"><CategoryIcon :name="category.icon" /></div>
-          <h3>{{ category.name }}</h3>
-          <p>{{ category.description }}</p>
-        </RouterLink>
-      </div>
-      <div class="mobile-categories">
-        <RouterLink v-for="category in mobileCategories" :key="category.id" class="category-item" :to="category.id ? { path: '/products', query: { category: category.id } } : '/categories'">
-          <div class="category-image"><CategoryIcon :name="category.icon" /></div>
-          <h3>{{ category.name }}</h3>
-        </RouterLink>
-      </div>
+      <RequestState
+        v-if="loading || error || categories.length === 0"
+        class="category-state"
+        :loading="loading"
+        :error="error"
+        :empty="!loading && !error"
+        loading-text="正在加载产品分类..."
+        empty-text="暂无产品分类"
+        @retry="loadCategories"
+      />
+      <template v-else>
+        <div class="desktop-categories">
+          <RouterLink v-for="category in desktopCategories" :key="category.id" class="category-item" :to="{ path: '/products', query: { category: category.id } }">
+            <div class="category-image"><CategoryIcon :name="getCategoryIcon(category)" /></div>
+            <h3>{{ category.name }}</h3>
+            <p>{{ getCategoryDescription(category) }}</p>
+          </RouterLink>
+        </div>
+        <div class="mobile-categories">
+          <RouterLink v-for="category in mobileCategories" :key="category.id" class="category-item" :to="{ path: '/products', query: { category: category.id } }">
+            <div class="category-image"><CategoryIcon :name="getCategoryIcon(category)" /></div>
+            <h3>{{ category.name }}</h3>
+          </RouterLink>
+          <RouterLink class="category-item" to="/categories">
+            <div class="category-image"><CategoryIcon name="grid" /></div>
+            <h3>全部分类</h3>
+          </RouterLink>
+        </div>
+      </template>
     </div>
   </section>
 </template>
@@ -42,6 +80,7 @@ const mobileCategories = [
 .category-intro h2 { margin-top: 6px; font-size: 22px; font-weight: 700; }
 .category-intro p { color: #c6e7ff; font-size: 11px; letter-spacing: .08em; }
 .category-intro a { display: grid; width: 25px; height: 25px; margin-top: 10px; place-items: center; border: 1px solid rgb(255 255 255 / 65%); border-radius: 50%; }
+.category-state { min-width: 0; flex: 1; }
 .desktop-categories { display: grid; min-width: 0; flex: 1; grid-template-columns: repeat(6, 1fr); }
 .category-item { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; padding: 13px 6px; text-align: center; }
 .desktop-categories .category-item:not(:last-child)::after { content: ""; position: absolute; top: 24px; right: 0; bottom: 24px; width: 1px; background: #edf0f3; }
@@ -55,6 +94,7 @@ const mobileCategories = [
   .category-section { padding: 20px 0 0; background: transparent; }
   .category-panel { display: block; min-height: 0; overflow: visible; border: 0; border-radius: 12px; box-shadow: 0 7px 24px rgb(38 77 115 / 6%); }
   .category-intro, .desktop-categories { display: none; }
+  .category-state { min-height: 130px; }
   .mobile-categories { display: grid; grid-template-columns: repeat(6, 1fr); padding: 15px 5px 12px; }
   .category-item { padding: 0 1px; }
   .category-image { width: clamp(38px, 12vw, 54px); height: clamp(38px, 12vw, 54px); }

@@ -1,18 +1,34 @@
 <script setup lang="ts">
-import type { ArtworkType } from '@/types/catalog'
+import { computed } from 'vue'
 import boltUrl from '@/assets/products/bolt.svg'
 import nutUrl from '@/assets/products/nut.svg'
 import washerUrl from '@/assets/products/washer.svg'
 import anchorUrl from '@/assets/products/anchor.svg'
 import hingeUrl from '@/assets/products/hinge.svg'
 import bearingUrl from '@/assets/products/bearing.svg'
+import drillUrl from '@/assets/products/drill.svg'
+import wrenchUrl from '@/assets/products/wrench.svg'
+import placeholderUrl from '@/assets/products/placeholder.svg'
 
-const props = withDefaults(defineProps<{ type: ArtworkType; alt?: string }>(), { alt: '' })
-const artwork: Record<ArtworkType, string> = { bolt: boltUrl, nut: nutUrl, washer: washerUrl, anchor: anchorUrl, hinge: hingeUrl, bearing: bearingUrl }
+const props = withDefaults(defineProps<{ slug?: string | null; alt?: string }>(), { slug: null, alt: '' })
+const artwork: Record<string, string> = {
+  bolt: boltUrl,
+  nut: nutUrl,
+  washer: washerUrl,
+  anchor: anchorUrl,
+  hinge: hingeUrl,
+  bearing: bearingUrl,
+  drill: drillUrl,
+  wrench: wrenchUrl,
+}
+const source = computed(() => {
+  const slug = props.slug?.trim().toLowerCase()
+  return (slug && artwork[slug]) || placeholderUrl
+})
 </script>
 
 <template>
-  <img class="product-artwork" :src="artwork[props.type]" :alt="alt" width="480" height="360" loading="lazy" />
+  <img class="product-artwork" :src="source" :alt="alt" width="480" height="360" loading="lazy" />
 </template>
 
 <style scoped>
