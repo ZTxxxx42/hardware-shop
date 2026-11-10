@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 import { showRequestError } from '@/api/error'
-import logoUrl from '@/assets/logo-mark.svg'
+import logoUrl from '@/assets/logo.svg'
 
 const router = useRouter()
 const route = useRoute()

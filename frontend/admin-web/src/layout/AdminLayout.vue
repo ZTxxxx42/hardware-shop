@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Box, CreditCard, Expand, Files, Fold, PriceTag, Tickets, User } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
-import logoUrl from '@/assets/logo-mark.svg'
+import logoUrl from '@/assets/logo.svg'
 
 const route = useRoute()
 const router = useRouter()
