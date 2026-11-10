@@ -11,7 +11,7 @@ withDefaults(defineProps<{ inverse?: boolean; compact?: boolean }>(), {
   <div class="brand-logo" :class="{ 'brand-logo--inverse': inverse, 'brand-logo--compact': compact }">
     <img class="brand-logo__mark" :src="logoUrl" alt="" width="46" height="52" />
     <div class="brand-logo__copy">
-      <strong>恒泰五金商贸</strong>
+      <strong>恒泰五金</strong>
       <span>Hengtai Hardware Trade</span>
     </div>
   </div>

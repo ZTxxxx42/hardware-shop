@@ -30,7 +30,7 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const auth = useAuthStore()
-  document.title = `${to.meta.title ?? '运营管理'} · 恒固五金`
+  document.title = `${to.meta.title ?? '运营管理'} · 恒泰五金`
   if (!to.meta.public && !auth.isAuthenticated) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }

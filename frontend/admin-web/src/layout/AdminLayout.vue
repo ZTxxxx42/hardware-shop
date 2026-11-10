@@ -54,7 +54,7 @@ onBeforeUnmount(() => media.removeEventListener('change', handleViewport))
     <aside class="admin-sidebar" :class="{ 'is-mobile-open': mobileOpen }" :style="{ width: asideWidth }">
       <div class="brand" :class="{ 'is-collapsed': isCollapsed && !isMobile }">
         <img :src="logoUrl" alt="" class="brand-mark" />
-        <div v-show="!isCollapsed || isMobile" class="brand-copy"><strong>恒固五金</strong><span>运营管理</span></div>
+        <div v-show="!isCollapsed || isMobile" class="brand-copy"><strong>恒泰五金</strong><span>运营管理</span></div>
       </div>
       <div v-show="!isCollapsed || isMobile" class="nav-caption">业务管理</div>
       <el-menu :default-active="route.path" :collapse="isCollapsed && !isMobile" :collapse-transition="false" router class="sidebar-menu">

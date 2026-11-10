@@ -39,7 +39,7 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
 <template>
   <header class="site-header">
     <div class="desktop-header container">
-      <RouterLink to="/" aria-label="恒泰五金商贸首页"><BrandLogo /></RouterLink>
+      <RouterLink to="/" aria-label="恒泰五金首页"><BrandLogo /></RouterLink>
       <nav class="desktop-nav" aria-label="主导航">
         <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-link" :class="{ active: isActive(item.to) }">
           {{ item.label }}<el-icon v-if="item.dropdown" :size="12"><ArrowDown /></el-icon>
@@ -66,7 +66,7 @@ watch(() => route.fullPath, () => { drawerOpen.value = false })
 
     <div class="mobile-header">
       <div class="mobile-top container">
-        <RouterLink to="/" aria-label="恒泰五金商贸首页"><BrandLogo /></RouterLink>
+        <RouterLink to="/" aria-label="恒泰五金首页"><BrandLogo /></RouterLink>
         <div class="mobile-actions">
           <a href="tel:400-123-4567" aria-label="拨打客服热线"><el-icon :size="21"><Phone /></el-icon></a>
           <RouterLink to="/cart" aria-label="购物车">

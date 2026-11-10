@@ -41,7 +41,7 @@ async function submit() {
 <template>
   <main class="login-page">
     <section class="login-story">
-      <div class="story-brand"><img :src="logoUrl" alt="" /><span>恒固五金</span></div>
+      <div class="story-brand"><img :src="logoUrl" alt="" /><span>恒泰五金</span></div>
       <div class="story-content">
         <p class="story-eyebrow">HARDWARE TRADE OPERATIONS</p>
         <h1>把每一笔订货，<br />落实到每一件五金。</h1>
@@ -52,7 +52,7 @@ async function submit() {
     </section>
     <section class="login-form-section">
       <div class="login-box">
-        <div class="mobile-brand"><img :src="logoUrl" alt="" /><strong>恒固五金</strong></div>
+        <div class="mobile-brand"><img :src="logoUrl" alt="" /><strong>恒泰五金</strong></div>
         <p class="login-kicker">管理后台</p>
         <h2>欢迎回来</h2>
         <p class="login-intro">使用管理员账号进入运营管理系统</p>
@@ -67,7 +67,7 @@ async function submit() {
         </el-form>
         <div class="demo-note"><strong>管理员登录</strong><span>使用后端管理员账号 admin，密码 admin123。登录状态由 JWT 凭证维持。</span></div>
       </div>
-      <footer>恒固五金商贸 · MVP</footer>
+      <footer>恒泰五金商贸 · MVP</footer>
     </section>
   </main>
 </template>
