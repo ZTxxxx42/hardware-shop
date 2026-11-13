@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+ <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#6cb6ec"/><stop offset="1" stop-color="#e8f5ff"/></linearGradient><linearGradient id="wall" x1="0" x2="1"><stop stop-color="#f8fafb"/><stop offset="1" stop-color="#c9d3da"/></linearGradient><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2b6b98"/><stop offset=".5" stop-color="#8bc4e4"/><stop offset="1" stop-color="#194f79"/></linearGradient></defs>
+ <path fill="url(#sky)" d="M0 0h900v520H0z"/>
+ <g fill="#fff" opacity=".7"><ellipse cx="170" cy="90" rx="100" ry="25"/><ellipse cx="690" cy="70" rx="125" ry="28"/></g>
+ <path fill="#91a797" d="M0 375q190-75 360 5t540-15v155H0z"/>
+ <path fill="#c4c9ca" d="M0 430 900 360v160H0z"/>
+ <path fill="url(#wall)" d="m120 150 405-85 295 130v230l-295 45-405-45z"/>
+ <path fill="#e5e9eb" d="m120 150 405-85v405l-405-45z"/>
+ <path fill="#b8c3ca" d="m525 65 295 130-295-45z"/>
+ <path fill="#2a6f9f" d="m525 150 295 45-295 275z" opacity=".12"/>
+ <g fill="url(#glass)" stroke="#fff" stroke-width="8"><path d="m155 215 75-12v82l-75 9z"/><path d="m260 199 75-12v89l-75 10z"/><path d="m365 184 75-12v96l-75 10z"/><path d="m155 325 75-7v82l-75-5z"/><path d="m260 313 75-7v89l-75-5z"/><path d="m365 302 75-7v96l-75-5z"/><path d="m568 205 70 15v85l-70-12z"/><path d="m669 226 70 18v85l-70-15z"/></g>
+ <path fill="#176cb5" d="m265 104 210-43v55l-210 39z"/>
+ <text x="370" y="119" text-anchor="middle" fill="#fff" font-family="Microsoft YaHei,sans-serif" font-size="28" font-weight="700" transform="rotate(-11 370 119)">恒泰五金</text>
+ <path fill="#d9dddf" d="M0 455 900 390v22L0 490z"/>
+ <g fill="#3f7658"><circle cx="82" cy="385" r="47"/><circle cx="850" cy="375" r="55"/></g>
+ <g fill="#71553c"><path d="M75 390h14v70H75zM843 380h14v65h-14z"/></g>
+ <g fill="#344b5d"><path d="m625 410 22-23h83l35 23v28H625z"/><path d="m65 440 20-20h66l27 20v22H65z"/></g>
+ <g fill="#dbe8ef"><path d="m650 391 15-11h48l20 11zM85 423l12-10h40l15 10z"/></g>
+ <g fill="#172a39"><circle cx="655" cy="438" r="13"/><circle cx="735" cy="438" r="13"/><circle cx="92" cy="462" r="11"/><circle cx="152" cy="462" r="11"/></g>
+</svg>

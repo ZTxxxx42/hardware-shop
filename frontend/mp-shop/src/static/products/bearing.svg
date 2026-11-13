@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
+ <defs>
+  <radialGradient id="outer" cx="35%" cy="25%"><stop stop-color="#fff"/><stop offset=".28" stop-color="#c5cfd6"/><stop offset=".58" stop-color="#65747f"/><stop offset=".78" stop-color="#edf2f5"/><stop offset="1" stop-color="#5b6a75"/></radialGradient>
+  <radialGradient id="ball" cx="32%" cy="25%"><stop stop-color="#fff"/><stop offset=".28" stop-color="#dce4e9"/><stop offset=".65" stop-color="#73828d"/><stop offset="1" stop-color="#26353f"/></radialGradient>
+  <linearGradient id="edge" x1="0" x2="1"><stop stop-color="#35444f"/><stop offset=".4" stop-color="#e5ebef"/><stop offset=".7" stop-color="#8997a1"/><stop offset="1" stop-color="#2e3d48"/></linearGradient>
+  <filter id="s" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="15" stdDeviation="10" flood-color="#1c3448" flood-opacity=".28"/></filter>
+ </defs>
+ <ellipse cx="242" cy="310" rx="137" ry="17" fill="#5e7487" opacity=".15"/>
+ <g filter="url(#s)" transform="translate(90 12) rotate(-8 150 150)">
+  <circle cx="150" cy="158" r="143" fill="url(#edge)"/>
+  <circle cx="150" cy="150" r="143" fill="url(#outer)" stroke="#5d6c77" stroke-width="3"/>
+  <circle cx="150" cy="150" r="111" fill="#26353f" stroke="#eef2f4" stroke-width="4"/>
+  <circle cx="150" cy="150" r="65" fill="url(#outer)" stroke="#85939d" stroke-width="3"/>
+  <circle cx="150" cy="150" r="45" fill="#f5f7f9" stroke="#4d5d68" stroke-width="5"/>
+  <g fill="url(#ball)" stroke="#c4cdd3" stroke-width="2">
+   <circle cx="150" cy="62" r="19"/><circle cx="194" cy="74" r="19"/><circle cx="226" cy="106" r="19"/><circle cx="238" cy="150" r="19"/><circle cx="226" cy="194" r="19"/><circle cx="194" cy="226" r="19"/><circle cx="150" cy="238" r="19"/><circle cx="106" cy="226" r="19"/><circle cx="74" cy="194" r="19"/><circle cx="62" cy="150" r="19"/><circle cx="74" cy="106" r="19"/><circle cx="106" cy="74" r="19"/>
+  </g>
+  <circle cx="150" cy="150" r="135" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4"/>
+ </g>
+</svg>
