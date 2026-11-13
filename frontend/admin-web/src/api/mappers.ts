@@ -52,6 +52,10 @@ export function mapOrder(item: OrderBriefOut): Order {
     freightAmount: Number(item.freight_amount),
     totalAmount: Number(item.total_amount),
     items: [],
+    remark: item.remark,
+    carrier: item.carrier,
+    trackingNo: item.tracking_no,
+    shippedAt: item.shipped_at ? formatDateTime(item.shipped_at) : null,
     createdAt: formatDateTime(item.created_at),
   }
 }

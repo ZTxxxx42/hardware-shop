@@ -59,6 +59,12 @@ function openShipment(row: Order) {
 }
 async function confirmShipment() {
   if (!selectedOrder.value) return
+  const carrier = shipForm.carrier.trim()
+  const trackingNo = shipForm.trackingNo.trim()
+  if (!carrier || !trackingNo) {
+    ElMessage.warning('请填写物流公司和物流单号')
+    return
+  }
   const target = rows.value.find((item) => item.id === selectedOrder.value?.id)
   if (target?.status !== 'PAID') {
     ElMessage.warning('仅已支付订单可以发货')
@@ -66,7 +72,7 @@ async function confirmShipment() {
   }
   shipping.value = true
   try {
-    const { data } = await adminApi.shipOrder(target.id)
+    const { data } = await adminApi.shipOrder(target.id, { carrier, tracking_no: trackingNo })
     const detail = mapOrderDetail(data)
     Object.assign(target, detail)
     selectedOrder.value = target
@@ -120,6 +126,10 @@ onMounted(loadData)
           <el-descriptions-item label="支付时间">{{ selectedOrder.paidAt ?? '—' }}</el-descriptions-item>
           <el-descriptions-item label="收货人">{{ selectedOrder.receiver ? `${selectedOrder.receiver} · ${selectedOrder.phone ?? ''}` : '后端未返回' }}</el-descriptions-item>
           <el-descriptions-item label="收货地址" :span="2">{{ selectedOrder.address ?? '后端未返回' }}</el-descriptions-item>
+          <el-descriptions-item label="订单备注" :span="2">{{ selectedOrder.remark || '—' }}</el-descriptions-item>
+          <el-descriptions-item label="物流公司">{{ selectedOrder.carrier || '—' }}</el-descriptions-item>
+          <el-descriptions-item label="物流单号">{{ selectedOrder.trackingNo || '—' }}</el-descriptions-item>
+          <el-descriptions-item label="发货时间" :span="2">{{ selectedOrder.shippedAt || '—' }}</el-descriptions-item>
         </el-descriptions>
         <h3 class="detail-section-title">商品与价格快照</h3>
         <el-table :data="selectedOrder.items" size="small" border>
@@ -136,10 +146,10 @@ onMounted(loadData)
     <el-dialog v-model="shipVisible" title="订单发货" width="480px" append-to-body>
       <el-alert v-if="selectedOrder" :title="`订单 ${selectedOrder.orderNo} 发货后将进入“已发货”状态。`" type="info" :closable="false" />
       <el-form :model="shipForm" label-width="88px" class="ship-form">
-        <el-form-item label="物流公司"><el-select v-model="shipForm.carrier" style="width: 100%"><el-option label="顺丰速运" value="顺丰速运" /><el-option label="京东物流" value="京东物流" /><el-option label="德邦快递" value="德邦快递" /><el-option label="其他物流" value="其他物流" /></el-select></el-form-item>
-        <el-form-item label="物流单号"><el-input v-model="shipForm.trackingNo" placeholder="界面占位，不会提交到后端" /></el-form-item>
+        <el-form-item label="物流公司" required><el-select v-model="shipForm.carrier" style="width: 100%"><el-option label="顺丰速运" value="顺丰速运" /><el-option label="京东物流" value="京东物流" /><el-option label="德邦快递" value="德邦快递" /><el-option label="其他物流" value="其他物流" /></el-select></el-form-item>
+        <el-form-item label="物流单号" required><el-input v-model="shipForm.trackingNo" maxlength="64" placeholder="请输入物流单号" /></el-form-item>
       </el-form>
-      <p class="form-tip">物流字段为界面占位；当前后端发货端点无需请求体。</p>
+      <p class="form-tip">请核对物流信息，发货后将随订单详情保存。</p>
       <template #footer><div class="dialog-footer"><el-button @click="shipVisible = false">取消</el-button><el-button type="primary" :loading="shipping" @click="confirmShipment">确认发货</el-button></div></template>
     </el-dialog>
   </div>

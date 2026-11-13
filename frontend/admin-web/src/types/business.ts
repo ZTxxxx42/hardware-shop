@@ -58,6 +58,10 @@ export interface Order {
   address?: string
   createdAt: string
   paidAt?: string
+  remark?: string | null
+  carrier?: string | null
+  trackingNo?: string | null
+  shippedAt?: string | null
 }
 
 export interface Payment {

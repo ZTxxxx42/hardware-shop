@@ -78,6 +78,10 @@ export interface OrderBriefOut {
   product_amount: string
   freight_amount: string
   total_amount: string
+  remark: string | null
+  carrier: string | null
+  tracking_no: string | null
+  shipped_at: string | null
   created_at: string
 }
 
@@ -132,7 +136,7 @@ export const adminApi = {
   updateCategory: (id: number, data: CategoryPayload) => http.patch<CategoryOut>(`/api/admin/categories/${id}`, data),
   deleteCategory: (id: number) => http.delete(`/api/admin/categories/${id}`),
   getOrders: () => http.get<OrderBriefOut[]>('/api/admin/orders'),
-  shipOrder: (id: number) => http.patch<OrderDetailOut>(`/api/admin/orders/${id}/ship`),
+  shipOrder: (id: number, data: { carrier: string; tracking_no: string }) => http.patch<OrderDetailOut>(`/api/admin/orders/${id}/ship`, data),
   getPayments: () => http.get<PaymentOut[]>('/api/admin/payments'),
   getCustomers: (params?: { keyword?: string }) => http.get<CustomerOut[]>('/api/admin/customers', { params }),
   updateCustomerLevel: (id: number, level_code: string) => http.patch<CustomerOut>(`/api/admin/customers/${id}`, { level_code }),
