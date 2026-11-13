@@ -9,7 +9,7 @@ withDefaults(
 
 <template>
   <view class="login-prompt">
-    <view class="login-prompt__mark">恒</view>
+    <image class="login-prompt__mark" src="/static/brand/logo.png" mode="aspectFit" />
     <text class="login-prompt__title">{{ title }}</text>
     <text v-if="description" class="login-prompt__desc">{{ description }}</text>
     <button class="btn btn-primary login-prompt__btn" @tap="goLogin(redirect)">去登录/注册</button>
@@ -29,16 +29,8 @@ withDefaults(
 }
 
 .login-prompt__mark {
-  display: flex;
   width: 110rpx;
   height: 110rpx;
-  align-items: center;
-  justify-content: center;
-  border-radius: 32rpx;
-  color: var(--brand-dark);
-  background: var(--brand-light);
-  font-size: 48rpx;
-  font-weight: 700;
 }
 
 .login-prompt__title {

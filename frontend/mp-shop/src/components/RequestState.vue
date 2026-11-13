@@ -16,7 +16,7 @@ withDefaults(
       <button class="btn btn-ghost request-state__retry" @tap="$emit('retry')">重新加载</button>
     </view>
     <view v-else-if="empty" class="request-state__empty">
-      <view class="request-state__empty-mark">恒</view>
+      <image class="request-state__empty-mark" src="/static/brand/logo.png" mode="aspectFit" />
       <text>{{ emptyText }}</text>
     </view>
   </view>
@@ -76,14 +76,7 @@ withDefaults(
 }
 
 .request-state__empty-mark {
-  display: flex;
   width: 88rpx;
   height: 88rpx;
-  align-items: center; justify-content: center;
-  border-radius: 26rpx;
-  color: var(--brand);
-  background: var(--brand-light);
-  font-size: 40rpx;
-  font-weight: 700;
 }
 </style>

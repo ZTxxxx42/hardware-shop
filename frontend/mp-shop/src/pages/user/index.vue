@@ -122,7 +122,7 @@ onShow(loadProfile)
 <template>
   <view class="page-pad user-page">
     <view v-if="!userStore.isLoggedIn" class="guest-card">
-      <view class="guest-card__avatar">恒</view>
+      <image class="guest-card__avatar" src="/static/brand/logo.png" mode="aspectFit" />
       <text class="eyebrow">HENGTAI / MEMBER</text>
       <view class="guest-card__title">采购服务，从登录开始</view>
       <text class="guest-card__subtitle">查看会员价格，管理购物车、订单与收货地址</text>
@@ -188,7 +188,7 @@ onShow(loadProfile)
 .user-page { padding-top: 32rpx; }
 .guest-card { display: flex; flex-direction: column; align-items: flex-start; padding: 44rpx 36rpx; border-top: 6rpx solid var(--brand); background: var(--brand-deep); color: var(--white); }
 .guest-card .eyebrow { color: #b9c9d8; }
-.guest-card__avatar { display: flex; width: 112rpx; height: 112rpx; align-items: center; justify-content: center; margin-bottom: 28rpx; border-radius: 28rpx; color: var(--brand-deep); background: var(--brand); font-size: 48rpx; font-weight: 800; }
+.guest-card__avatar { width: 112rpx; height: 112rpx; margin-bottom: 28rpx; }
 .guest-card__title { margin-top: 12rpx; font-size: 38rpx; font-weight: 750; }
 .guest-card__subtitle { margin-top: 12rpx; color: #b9c9d8; font-size: 24rpx; }
 .guest-card__btn { min-height: 80rpx; margin-top: 30rpx; padding: 0 44rpx; }

@@ -34,11 +34,16 @@ function buildUrl(path: string): string {
 
 export function request<T>(options: RequestOptions): Promise<T> {
   const token = getToken()
+  const data = options.data
+    ? (Object.fromEntries(
+        Object.entries(options.data).filter(([, value]) => value !== undefined && value !== null),
+      ) as Record<string, unknown>)
+    : undefined
   return new Promise<T>((resolve, reject) => {
     uni.request({
       url: buildUrl(options.url),
       method: (options.method ?? 'GET') as unknown as UniApp.RequestOptions['method'],
-      data: options.data,
+      data,
       header: {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
