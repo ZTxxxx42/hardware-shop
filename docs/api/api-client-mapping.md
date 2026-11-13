@@ -58,7 +58,7 @@ API 封装：`frontend/admin-web/src/api/admin.ts`（含登录与后台端点）
 | adminApi.shipOrder | `PATCH /api/admin/orders/{id}/ship` | |
 | adminApi.getPayments | `GET /api/admin/payments` | |
 
-> 管理端集成状态：登录（`stores/auth.ts`）与商品/分类/价格/订单/支付流水列表已接入真实 API；**客户管理页未接入**（后端缺失对应端点，页面已用告警标注）。详见下文差异核对。
+> 管理端集成状态：登录（`stores/auth.ts`）与商品/分类/价格/**客户**/订单/支付流水列表均已接入真实 API。详见下文差异核对。
 
 ## 2. api.md 与实际代码差异核对
 
@@ -66,7 +66,7 @@ API 封装：`frontend/admin-web/src/api/admin.ts`（含登录与后台端点）
 | --- | --- | --- | --- | --- |
 | 1 | 分类路径参数名 | `PATCH/DELETE /admin/categories/{id}` | `PATCH/DELETE /admin/categories/{category_id}`（`backend/app/api/admin.py`） | 语义一致，参数名以代码为准，待同步 api.md |
 | 2 | 订单发货路径参数名 | `PATCH /admin/orders/{id}/ship` | `PATCH /admin/orders/{order_id}/ship` | 同上 |
-| 3 | 客户管理端点 | 未在 api.md 列出 | 后端无客户管理端点（`/admin/customers` 不存在） | **缺失**，MVP 需求 P0「客户管理」未落地；等级指定需直接改库或待补端点 |
+| 3 | 客户管理端点 | 未在 api.md 列出 | 后端已实现 `GET/PATCH /admin/customers`（列表+指定等级，commit 2e446ba） | **已落地**，api.md 2.6 已补 |
 | 4 | `GET /auth/me` 返回字段 | `UserBrief`（含 phone） | `backend/app/api/auth.py::me` 未返回 `phone`（仅 id/username/role/level_code） | 差异待核对，建议补 `phone` 或统一口径 |
 | 5 | 下单库存时机 | api.md 第 3 节第 3 步「预占扣减库存」 | 与 `services/order.py` 一致（下单预占，回调不二次扣减） | 一致 |
 | 6 | 支付状态 | api.md 未列 `CLOSED` | `PaymentStatus.CLOSED` 存在，取消订单时 PENDING 流水转 CLOSED | api.md 建议补 `CLOSED` |
