@@ -23,7 +23,9 @@
 | BUSINESS_ERROR | 400 | 通用业务错误 |
 | INSUFFICIENT_STOCK | 400 | 库存不足 |
 | INVALID_STATE_TRANSITION | 400 | 非法订单状态流转 |
-| PAYMENT_VERIFY_FAILED | 400 | 支付回调验签失败 |
+| PAYMENT_VERIFY_FAILED | 400/503 | 支付回调验签失败；真实验签未实现时以 503 安全失败关闭 |
+| WECHAT_AUTH_FAILED | 401 | 微信登录凭证无效或已过期 |
+| WECHAT_SERVICE_UNAVAILABLE | 503 | 微信登录未配置或微信服务不可用 |
 
 HTTP 401 表示未登录/凭证无效,HTTP 403 表示角色无权限(会员接口用 `role=member`,管理接口用 `role=admin`)。
 
@@ -48,10 +50,13 @@ JWT 无状态认证,payload 携带:
 | --- | --- | --- | --- | --- | --- |
 | POST | `/auth/register` | 无 | `{username, password, phone?}` | `TokenResponse` | 注册即会员(role=member),等级由后台指定 |
 | POST | `/auth/login` | 无 | `{username, password}` | `TokenResponse` | 登录返回 JWT |
+| POST | `/auth/wechat/login` | 无 | `{code}` | `TokenResponse` | 微信小程序登录,未配置 AppID/AppSecret 时 503 安全失败(不伪造登录) |
 | GET | `/auth/me` | 登录 | — | `UserBrief` | 当前用户信息 |
 
 `TokenResponse`:`{access_token, token_type, expires_in, user: UserBrief}`
 `UserBrief`:`{id, username, role, phone?, level_code?}`
+
+> 微信登录:`{code}` 经 `jscode2session` 换取 openid(及可选 unionid),按 openid 匹配既有用户,不存在则自动创建 `role=member` 账号(用户名随机 `wx_…`),存在且 unionid 缺失时回填。未配置 `wechat_mp_appid`/`wechat_mp_appsecret` 时返回 503 `WECHAT_SERVICE_UNAVAILABLE`,凭证无效返回 401 `WECHAT_AUTH_FAILED`;openid/unionid **不通过 `UserBrief` 下发**。
 
 ### 2.2 商品目录 `/catalog`(游客可访问,价格按登录态动态返回)
 
@@ -85,10 +90,14 @@ JWT 无状态认证,payload 携带:
 
 下单内部顺序:**校验库存 → 按等级锁价 → 预占库存 → 创建订单 → 创建支付单 → 清空购物车**,同一事务提交。
 
+`OrderBrief`:`{id, order_no, status, product_amount, freight_amount, total_amount, remark?, carrier?, tracking_no?, shipped_at?, created_at}`
+`OrderDetail` = `OrderBrief` + `{items: [OrderItemOut], address_snapshot?, payments: [PaymentOut]}`(物流字段 `carrier/tracking_no/shipped_at` 发货前为空)
+
 ### 2.5 会员资料/地址 `/member`(会员)
 
 | 方法 | 路径 | 鉴权 | 请求 | 响应 |
 | --- | --- | --- | --- | --- |
+| POST | `/member/account-deletion` | member | — | `AccountDeletionOut` | 注销申请,置 `PENDING`,不物理删除,202 |
 | GET | `/member/profile` | member | — | `ProfileOut` |
 | PATCH | `/member/profile` | member | `{phone?, real_name?}` | `ProfileOut` |
 | GET | `/member/level` | member | — | `LevelOut \| null` |
@@ -96,6 +105,8 @@ JWT 无状态认证,payload 携带:
 | POST | `/member/addresses` | member | `{receiver, phone, region, detail}` | `AddressOut` |
 | PATCH | `/member/addresses/{address_id}` | member | `{receiver, phone, region, detail}` | `AddressOut` |
 | DELETE | `/member/addresses/{address_id}` | member | — | 204 |
+
+> `POST /member/account-deletion` 返回 202,仅置 `deletion_status=PENDING` 并记录 `deletion_requested_at`,不物理删除账号;重复申请幂等(已 PENDING 不再更新时间)。`AccountDeletionOut`:`{deletion_status, deletion_requested_at}`。
 
 ### 2.6 管理 `/admin`(admin)
 
@@ -113,7 +124,7 @@ JWT 无状态认证,payload 携带:
 | GET | `/admin/customers` | admin | query:`keyword?` | `list[ProfileOut]` | 列出所有 `role=member` 客户,`keyword` 模糊匹配账号/手机/姓名 |
 | PATCH | `/admin/customers/{user_id}` | admin | `{level_code}` | `ProfileOut` | 指定客户等级(零售/批发/VIP),无档案则建档 |
 | GET | `/admin/orders` | admin | — | `list[OrderBrief]` | |
-| PATCH | `/admin/orders/{order_id}/ship` | admin | — | `OrderDetail` | 已支付 → 已发货 |
+| PATCH | `/admin/orders/{order_id}/ship` | admin | `{carrier, tracking_no}`(必填) | `OrderDetail` | 已支付 → 已发货,写入物流公司/单号/发货时间 |
 | GET | `/admin/payments` | admin | — | `list[PaymentOut]` | 支付流水 |
 
 `ProfileOut`:`{user_id, username, phone?, real_name?, level_code?, level_name?}`
@@ -125,6 +136,8 @@ JWT 无状态认证,payload 携带:
 | POST | `/payment/notify/{channel}` | 无 | `PaymentNotifyPayload` | `{code, message}` | channel ∈ wechat/alipay |
 
 `PaymentNotifyPayload`:`{order_no, channel, trade_no, amount, status, sign?, extra?}`
+
+> 微信/支付宝支付验签当前为**安全失败桩**:`_verify_signature` 未接入真实商户证书前一律拒绝处理回调,返回 503 `PAYMENT_VERIFY_FAILED`(不流转订单,不伪造已支付);金额校验与幂等逻辑已实现,待真实验签接入后启用。见 `backend/app/services/payment.py`。
 
 ## 3. 下单支付回调时序要点
 
@@ -155,4 +168,4 @@ JWT 无状态认证,payload 携带:
 
 - 模型:`User, CustomerLevel, MemberProfile, Category, Product, ProductImage, ProductSpec, ProductPrice, CartItem, Address, Order, OrderItem, Payment`
 - 会话:`Base` 及全部模型由 `app.models` 导出;会话工厂 `SessionLocal` 由 `app.core.db` 提供
-- 关键列(架构设计.md 第 4 节):`user.password_hash/role/phone`;`member_profile.level_code/real_name`;`product.retail_price/stock/status/main_image`;`product_price.price + 唯一(product_id, level_code)`;`order.order_no(唯一)/status/product_amount/freight_amount/total_amount/receiver_name/receiver_phone/receiver_region/receiver_detail(地址快照展开列)`;`order_item.product_name/price/quantity/subtotal`;`payment.trade_no/amount/status/paid_at + 唯一(order_id, channel)`。
+- 关键列(架构设计.md 第 4 节):`user.password_hash/role/phone/openid(唯一)/unionid(索引)/deletion_status/deletion_requested_at`;`member_profile.level_code/real_name`;`product.retail_price/stock/status/main_image`;`product_price.price + 唯一(product_id, level_code)`;`order.order_no(唯一)/status/product_amount/freight_amount/total_amount/receiver_name/receiver_phone/receiver_region/receiver_detail(地址快照展开列)/remark/carrier/tracking_no/shipped_at`;`order_item.product_name/price/quantity/subtotal`;`payment.trade_no/amount/status/paid_at + 唯一(order_id, channel)`。

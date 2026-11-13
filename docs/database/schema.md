@@ -1,7 +1,7 @@
 # 五金商贸网站 · 数据模型说明（PostgreSQL 16）
 
 > 版本 v1.0 ｜ 2026-11-08 ｜ 依据：`docs/architecture/架构设计.md` 第 4 节（唯一权威数据源）
-> 实现：`backend/app/models/`（SQLAlchemy 2.0）+ `backend/alembic/versions/0001_initial_schema.py`（Alembic 1.13）
+> 实现：`backend/app/models/`（SQLAlchemy 2.0）+ `backend/alembic/versions/0001_initial_schema.py`、`0002_wechat_account_deletion_order_logistics.py`（Alembic 1.13）
 
 ## 1. 统一约定
 
@@ -21,6 +21,7 @@
 | 字段 | 取值 |
 | --- | --- |
 | `user.role` | `member` / `admin` |
+| `user.deletion_status` | `NONE` / `PENDING` |
 | `customer_level.code` | `retail` / `wholesale` / `vip` |
 | `product.status` | `ON_SALE` / `OFF_SALE` |
 | `order.status` | `PENDING_PAYMENT` / `PAID` / `SHIPPED` / `COMPLETED` / `CANCELLED` |
@@ -58,10 +59,14 @@
 | password_hash | VARCHAR(255) | NOT NULL | 密码哈希 |
 | role | VARCHAR(16) | NOT NULL, DEFAULT 'member' | member / admin |
 | phone | VARCHAR(20) | NULL | 手机号 |
+| openid | VARCHAR(64) | NULL, UNIQUE | 微信小程序 openid（微信登录绑定） |
+| unionid | VARCHAR(64) | NULL, INDEX | 微信开放平台 unionid（可选，回填用） |
+| deletion_status | VARCHAR(16) | NOT NULL, DEFAULT 'NONE' | 注销状态：NONE / PENDING |
+| deletion_requested_at | TIMESTAMPTZ | NULL | 注销申请时间 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 | updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 
-索引：`uq_user_username`（唯一）。
+索引：`uq_user_username`（唯一）、`uq_user_openid`（唯一）、`ix_user_unionid`（unionid）。
 
 ### 3.2 customer_level
 
@@ -198,6 +203,10 @@
 | receiver_phone | VARCHAR(20) | NOT NULL | 电话快照 |
 | receiver_region | VARCHAR(255) | NOT NULL | 地区快照 |
 | receiver_detail | VARCHAR(512) | NOT NULL | 详细地址快照 |
+| remark | VARCHAR(500) | NULL | 订单备注 |
+| carrier | VARCHAR(64) | NULL | 物流公司（发货时写入） |
+| tracking_no | VARCHAR(64) | NULL | 物流单号（发货时写入） |
+| shipped_at | TIMESTAMPTZ | NULL | 发货时间 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 下单时间 |
 | updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 
@@ -280,6 +289,8 @@ order 1 ──── N payment
 | 索引 | 表.列 | 类型 | 目的 |
 | --- | --- | --- | --- |
 | uq_user_username | user.username | UNIQUE | 登录唯一 |
+| uq_user_openid | user.openid | UNIQUE | 微信登录唯一 |
+| ix_user_unionid | user.unionid | 普通 | 微信 unionid 查询 |
 | uq_order_order_no | order.order_no | UNIQUE | 订单号唯一 |
 | uq_product_price_product_level | product_price(product_id, level_code) | UNIQUE | 分级价唯一 + 覆盖 product_id 外键 |
 | uq_payment_order_channel | payment(order_id, channel) | UNIQUE | 支付幂等 + 覆盖 order_id 外键 |
@@ -307,4 +318,5 @@ order 1 ──── N payment
 3. **时间戳**：统一 `timestamptz`（带时区），数据库层 `now()` 兜底，`updated_at` 由 ORM `onupdate` 维护。
 4. **状态机约定**：订单 `PENDING_PAYMENT → PAID → SHIPPED → COMPLETED`，可取消为 `CANCELLED`；支付 `PENDING → SUCCESS/FAILED`。合法流转由领域层校验。
 5. **快照防改价**：`order_item.product_name/price` 与 `order` 收货地址均为下单时快照，历史订单不受后续商品/地址变更影响。
-6. **不使用 PG enum / 软删除 / 多租户**：保持 MVP 简洁，枚举用 VARCHAR，删除策略依赖外键级联。
+6. **不使用 PG enum / 多租户**：保持 MVP 简洁，枚举用 VARCHAR，商品/地址等删除策略依赖外键级联。账号注销为「申请制软状态」例外：`user.deletion_status` 记录 PENDING，不物理删除账号与历史订单。
+7. **微信登录绑定**：`user.openid` 唯一，微信登录按 openid 幂等匹配账号；`unionid` 建索引供开放平台关联回填。
