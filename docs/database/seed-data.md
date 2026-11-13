@@ -39,7 +39,7 @@ python scripts/seed.py
 
 ## 4. 商品与分级价格（product / product_price）
 
-种子商品均为 `status=ON_SALE`，`main_image` 存**素材标识**（如 `bolt`），前端据此映射本地 SVG（见 [../frontend/素材清单.md](../frontend/素材清单.md)）。分级价格由「零售价 × 系数」生成：批发 `0.85`、VIP `0.7`，`quantize(0.01)`（ROUND_HALF_EVEN）。
+种子商品均为 `status=ON_SALE`，`main_image` 存**素材标识**（如 `bolt`），前端据此映射本地素材——shop-web/admin-web 用 SVG、mp-shop 用 PNG（见 [../frontend/素材清单.md](../frontend/素材清单.md)）。分级价格由「零售价 × 系数」生成：批发 `0.85`、VIP `0.7`，`quantize(0.01)`（ROUND_HALF_EVEN）。
 
 | 商品 | 型号 | 分类 | 零售价(元) | 批发价(元) | VIP价(元) | 库存 | main_image |
 | --- | --- | --- | --- | --- | --- | --- | --- |
