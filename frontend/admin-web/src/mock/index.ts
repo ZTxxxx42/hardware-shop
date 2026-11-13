@@ -25,10 +25,10 @@ export const products: Product[] = [
 ]
 
 export const customers: Customer[] = [
-  { id: 501, username: 'chenggong', realName: '陈工', phone: '138 0013 8000', level: 'vip', orderCount: 36, totalSpent: 28640.5, createdAt: '2026-08-12 10:24' },
-  { id: 502, username: 'hengyuan', realName: '恒源机电采购部', phone: '139 2211 0578', level: 'wholesale', orderCount: 18, totalSpent: 15280, createdAt: '2026-09-03 14:16' },
-  { id: 503, username: 'liufang', realName: '刘芳', phone: '136 7721 4102', level: 'retail', orderCount: 3, totalSpent: 862.4, createdAt: '2026-10-18 09:42' },
-  { id: 504, username: 'xincheng', realName: '新城装饰', phone: '137 1190 6320', level: 'wholesale', orderCount: 11, totalSpent: 9876.8, createdAt: '2026-10-26 16:08' },
+  { id: 501, username: 'chenggong', realName: '陈工', phone: '138 0013 8000', level: 'vip', levelName: 'VIP客户' },
+  { id: 502, username: 'hengyuan', realName: '恒源机电采购部', phone: '139 2211 0578', level: 'wholesale', levelName: '批发客户' },
+  { id: 503, username: 'liufang', realName: '刘芳', phone: '136 7721 4102', level: 'retail', levelName: '零售客户' },
+  { id: 504, username: 'xincheng', realName: '新城装饰', phone: '137 1190 6320', level: 'wholesale', levelName: '批发客户' },
 ]
 
 export const orders: Order[] = [

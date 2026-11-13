@@ -30,10 +30,8 @@ export interface Customer {
   username: string
   realName: string
   phone: string
-  level: CustomerLevel
-  orderCount: number
-  totalSpent: number
-  createdAt: string
+  level: CustomerLevel | null
+  levelName: string
 }
 
 export interface OrderItem {

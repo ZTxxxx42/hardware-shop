@@ -26,6 +26,7 @@ class AuthUser:
     username: str
     role: str
     level_code: str | None
+    phone: str | None
 
 
 def hash_password(password: str) -> str:

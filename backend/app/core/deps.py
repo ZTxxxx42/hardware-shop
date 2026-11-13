@@ -43,7 +43,13 @@ def _auth_user_from_credentials(
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "用户不存在")
 
     level_code = getattr(getattr(user, "profile", None), "level_code", None)
-    return AuthUser(id=user.id, username=user.username, role=user.role, level_code=level_code)
+    return AuthUser(
+        id=user.id,
+        username=user.username,
+        role=user.role,
+        level_code=level_code,
+        phone=getattr(user, "phone", None),
+    )
 
 
 def get_current_user(

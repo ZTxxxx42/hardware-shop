@@ -21,14 +21,17 @@ from app.models import (  # 由 database agent 提供
 from app.schemas.admin import (
     CategoryCreate,
     CategoryUpdate,
+    CustomerLevelUpdate,
     ProductCreate,
     ProductPriceUpsert,
     ProductUpdate,
 )
 from app.schemas.catalog import CategoryOut, ProductBrief, ProductPriceItem
 from app.schemas.common import PageResult
+from app.schemas.member import ProfileOut
 from app.schemas.order import OrderBrief, OrderDetail
 from app.schemas.payment import PaymentOut
+from app.services import admin as admin_service
 from app.services import order as order_service
 
 router = APIRouter(prefix="/admin", tags=["管理"], dependencies=[Depends(require_admin)])
@@ -155,6 +158,27 @@ def upsert_product_prices(
     db.commit()
     rows = db.scalars(select(ProductPrice).where(ProductPrice.product_id == product_id)).all()
     return [ProductPriceItem(level_code=r.level_code, price=r.price) for r in rows]
+
+
+# ---------- 客户 ----------
+
+@router.get("/customers", response_model=list[ProfileOut])
+def list_customers(
+    keyword: str | None = Query(None, max_length=100),
+    db: Session = Depends(get_db),
+) -> list[ProfileOut]:
+    """列出所有前台会员;keyword 按账号/手机/姓名模糊过滤。"""
+    return admin_service.list_customers(db, keyword)
+
+
+@router.patch("/customers/{user_id}", response_model=ProfileOut)
+def set_customer_level(
+    user_id: int,
+    payload: CustomerLevelUpdate,
+    db: Session = Depends(get_db),
+) -> ProfileOut:
+    """为客户指定会员等级(零售/批发/VIP)。"""
+    return admin_service.set_customer_level(db, user_id, payload.level_code)
 
 
 # ---------- 订单 ----------

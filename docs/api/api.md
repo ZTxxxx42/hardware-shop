@@ -51,6 +51,7 @@ JWT 无状态认证,payload 携带:
 | GET | `/auth/me` | 登录 | — | `UserBrief` | 当前用户信息 |
 
 `TokenResponse`:`{access_token, token_type, expires_in, user: UserBrief}`
+`UserBrief`:`{id, username, role, phone?, level_code?}`
 
 ### 2.2 商品目录 `/catalog`(游客可访问,价格按登录态动态返回)
 
@@ -102,16 +103,20 @@ JWT 无状态认证,payload 携带:
 | --- | --- | --- | --- | --- | --- |
 | GET | `/admin/categories` | admin | — | `list[CategoryOut]` | |
 | POST | `/admin/categories` | admin | `{name, parent_id?, sort?}` | `CategoryOut` | |
-| PATCH | `/admin/categories/{id}` | admin | 部分字段 | `CategoryOut` | |
-| DELETE | `/admin/categories/{id}` | admin | — | 204 | |
+| PATCH | `/admin/categories/{category_id}` | admin | 部分字段 | `CategoryOut` | |
+| DELETE | `/admin/categories/{category_id}` | admin | — | 204 | |
 | GET | `/admin/products` | admin | `page`, `page_size` | `PageResult[ProductBrief]` | 以零售价返回 |
 | POST | `/admin/products` | admin | `ProductCreate` | `ProductBrief` | |
-| GET | `/admin/products/{id}` | admin | — | `ProductBrief` | |
-| PATCH | `/admin/products/{id}` | admin | `ProductUpdate` | `ProductBrief` | |
-| PUT | `/admin/products/{id}/prices` | admin | `{prices: [{level_code, price}]}` | `list[ProductPriceItem]` | 展开写入 `product_price` |
+| GET | `/admin/products/{product_id}` | admin | — | `ProductBrief` | |
+| PATCH | `/admin/products/{product_id}` | admin | `ProductUpdate` | `ProductBrief` | |
+| PUT | `/admin/products/{product_id}/prices` | admin | `{prices: [{level_code, price}]}` | `list[ProductPriceItem]` | 展开写入 `product_price` |
+| GET | `/admin/customers` | admin | query:`keyword?` | `list[ProfileOut]` | 列出所有 `role=member` 客户,`keyword` 模糊匹配账号/手机/姓名 |
+| PATCH | `/admin/customers/{user_id}` | admin | `{level_code}` | `ProfileOut` | 指定客户等级(零售/批发/VIP),无档案则建档 |
 | GET | `/admin/orders` | admin | — | `list[OrderBrief]` | |
-| PATCH | `/admin/orders/{id}/ship` | admin | — | `OrderDetail` | 已支付 → 已发货 |
+| PATCH | `/admin/orders/{order_id}/ship` | admin | — | `OrderDetail` | 已支付 → 已发货 |
 | GET | `/admin/payments` | admin | — | `list[PaymentOut]` | 支付流水 |
+
+`ProfileOut`:`{user_id, username, phone?, real_name?, level_code?, level_name?}`
 
 ### 2.7 支付回调 `/payment`(仅验签,不鉴权)
 
@@ -128,9 +133,9 @@ JWT 无状态认证,payload 携带:
 3. 结算 → `POST /orders`:选地址,后端校验库存,按等级重新计算单价与总额,生成订单(待支付)+ 支付单(唯一约束 `(order_id, channel)`),**预占扣减库存**。
 4. 网关预支付(本期桩实现,联调接入微信 Native/JSAPI 或支付宝)。
 5. 支付成功 → 网关异步回调 `POST /payment/notify/{channel}`:后端验签 → 幂等(流水唯一键 + 状态机 + 事务)→ 订单转「已支付」→ 记录流水 → 应答成功。
-6. 商家后台 `PATCH /admin/orders/{id}/ship` → 「已发货」。
-7. 买家 `POST /orders/{id}/confirm` → 「已完成」。
-8. 待支付订单 `POST /orders/{id}/cancel` → 「已取消」并**回补占用库存**。
+6. 商家后台 `PATCH /admin/orders/{order_id}/ship` → 「已发货」。
+7. 买家 `POST /orders/{order_id}/confirm` → 「已完成」。
+8. 待支付订单 `POST /orders/{order_id}/cancel` → 「已取消」并**回补占用库存**。
 
 ## 4. 订单状态机对应
 
@@ -138,9 +143,9 @@ JWT 无状态认证,payload 携带:
 | --- | --- | --- | --- |
 | 下单 | — | PENDING_PAYMENT | POST `/orders` |
 | 支付成功回调 | PENDING_PAYMENT | PAID | POST `/payment/notify/{channel}` |
-| 买家取消 | PENDING_PAYMENT | CANCELLED | POST `/orders/{id}/cancel` |
-| 商家发货 | PAID | SHIPPED | PATCH `/admin/orders/{id}/ship` |
-| 确认收货 | SHIPPED | COMPLETED | POST `/orders/{id}/confirm` |
+| 买家取消 | PENDING_PAYMENT | CANCELLED | POST `/orders/{order_id}/cancel` |
+| 商家发货 | PAID | SHIPPED | PATCH `/admin/orders/{order_id}/ship` |
+| 确认收货 | SHIPPED | COMPLETED | POST `/orders/{order_id}/confirm` |
 
 非法流转(如 已发货→待支付、已完成→已取消)由领域层状态机拒绝,返回 `INVALID_STATE_TRANSITION`。MVP 不做退款。
 

@@ -1,12 +1,13 @@
 import type {
   CategoryOut,
+  CustomerOut,
   OrderBriefOut,
   OrderDetailOut,
   PaymentOut,
   ProductBriefOut,
   ProductDetailOut,
 } from './admin'
-import type { Category, Order, OrderStatus, Payment, Product } from '@/types/business'
+import type { Category, Customer, Order, OrderStatus, Payment, Product } from '@/types/business'
 import { formatDateTime } from '@/utils/format'
 
 export function mapCategory(item: CategoryOut, productCount = 0): Category {
@@ -86,5 +87,16 @@ export function mapPayment(item: PaymentOut, orders: Map<number, Order>): Paymen
     orderAmount: order?.totalAmount ?? null,
     status: item.status as Payment['status'],
     paidAt: item.paid_at ? formatDateTime(item.paid_at) : undefined,
+  }
+}
+
+export function mapCustomer(item: CustomerOut): Customer {
+  return {
+    id: item.user_id,
+    username: item.username,
+    realName: item.real_name ?? '',
+    phone: item.phone ?? '',
+    level: (item.level_code as Customer['level']) ?? null,
+    levelName: item.level_name ?? '',
   }
 }

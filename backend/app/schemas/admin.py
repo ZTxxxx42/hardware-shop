@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -46,3 +47,9 @@ class ProductPriceUpsert(BaseModel):
     """按等级批量设置价格,展开写入 product_price 冗余落库(架构设计.md 3.2)。"""
 
     prices: list[ProductPriceItem]
+
+
+class CustomerLevelUpdate(BaseModel):
+    """管理员为客户指定会员等级,level_code 限定为固定三级字典。"""
+
+    level_code: Literal["retail", "wholesale", "vip"]

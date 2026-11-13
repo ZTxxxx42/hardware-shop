@@ -100,6 +100,15 @@ export interface PaymentOut {
   paid_at: string | null
 }
 
+export interface CustomerOut {
+  user_id: number
+  username: string
+  phone: string | null
+  level_code: string | null
+  level_name: string | null
+  real_name: string | null
+}
+
 export interface OrderDetailOut extends OrderBriefOut {
   items: OrderItemOut[]
   address_snapshot: {
@@ -125,4 +134,6 @@ export const adminApi = {
   getOrders: () => http.get<OrderBriefOut[]>('/api/admin/orders'),
   shipOrder: (id: number) => http.patch<OrderDetailOut>(`/api/admin/orders/${id}/ship`),
   getPayments: () => http.get<PaymentOut[]>('/api/admin/payments'),
+  getCustomers: (params?: { keyword?: string }) => http.get<CustomerOut[]>('/api/admin/customers', { params }),
+  updateCustomerLevel: (id: number, level_code: string) => http.patch<CustomerOut>(`/api/admin/customers/${id}`, { level_code }),
 }
