@@ -4,19 +4,19 @@ import { computed } from 'vue'
 const props = withDefaults(defineProps<{ slug?: string | null; alt?: string }>(), { slug: null, alt: '' })
 
 const artwork: Record<string, string> = {
-  bolt: '/static/products/bolt.svg',
-  nut: '/static/products/nut.svg',
-  washer: '/static/products/washer.svg',
-  anchor: '/static/products/anchor.svg',
-  hinge: '/static/products/hinge.svg',
-  bearing: '/static/products/bearing.svg',
-  drill: '/static/products/drill.svg',
-  wrench: '/static/products/wrench.svg',
+  bolt: '/static/products/bolt.png',
+  nut: '/static/products/nut.png',
+  washer: '/static/products/washer.png',
+  anchor: '/static/products/anchor.png',
+  hinge: '/static/products/hinge.png',
+  bearing: '/static/products/bearing.png',
+  drill: '/static/products/drill.png',
+  wrench: '/static/products/wrench.png',
 }
 
 const source = computed(() => {
   const slug = props.slug?.trim().toLowerCase()
-  return (slug && artwork[slug]) || '/static/products/placeholder.svg'
+  return (slug && artwork[slug]) || '/static/products/placeholder.png'
 })
 </script>
 

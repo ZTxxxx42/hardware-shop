@@ -129,7 +129,7 @@ onShow(loadHome)
       </view>
 
       <view class="brand-footer">
-        <image class="brand-footer__logo" src="/static/brand/logo.svg" mode="aspectFit" />
+        <image class="brand-footer__logo" src="/static/brand/logo.png" mode="aspectFit" />
         <text class="brand-footer__name">恒泰五金 · 工业供应</text>
         <text class="brand-footer__slogan">品质可查 · 采购可追踪</text>
       </view>

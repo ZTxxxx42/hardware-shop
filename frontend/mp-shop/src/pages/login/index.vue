@@ -110,7 +110,7 @@ onLoad((options) => {
   <view class="page-pad login-page">
     <view class="login-brand">
       <view class="login-brand__mark">
-        <image src="/static/brand/logo.svg" mode="aspectFit" />
+        <image src="/static/brand/logo.png" mode="aspectFit" />
       </view>
       <text class="login-brand__eyebrow">HENGTAI / MEMBER ACCESS</text>
       <view class="login-brand__title">恒泰五金</view>
