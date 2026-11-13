@@ -48,6 +48,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - PostgreSQL 跑在 Docker 容器 `hardware-shop-postgres`(库 `hardware_shop`,数据卷 `hardware-shop-pgdata`)。
 - 本地开发需先启动 Docker Desktop,再 `docker start hardware-shop-postgres`。
 
+### 一键部署(Docker)
+
+`docker compose up -d --build` 一键跑通:后端镜像 + 两个前端多阶段构建(`deploy/nginx.Dockerfile`)+ nginx + postgres,无需宿主机 Node/npm。同源部署前端 `VITE_API_BASE_URL` 默认 `/`(详见 `docs/deployment/部署说明.md` 第 4 节)。
+
 ## 架构
 
 ### 后端分层(`backend/app/`)
@@ -91,7 +95,7 @@ core/       config(pydantic-settings)、db(SessionLocal)、deps(依赖注入)、
 ## 关键约定
 
 - 后端依赖在 conda 环境「五金商贸」(路径 `C:\Users\朱涛\.conda\envs\五金商贸`),不要用全局 Python。
-- 前端 API 地址通过 `VITE_API_BASE_URL` 环境变量配置,默认 `http://127.0.0.1:8000`。
+- 前端 API 地址通过 `VITE_API_BASE_URL` 环境变量配置,本地开发默认 `http://127.0.0.1:8000`;Docker 同源部署默认 `/`(由 `deploy/nginx.Dockerfile` 构建参数注入)。
 - 品牌名统一为「恒泰五金」;logo 图片在 `src/assets/brand/logo.png`(Web)/ `src/static/brand/logo.png`(小程序)。
 - 端口:后端 8000、shop-web 5173、admin-web 5174、mp-shop h5 5175。CORS 白名单含 localhost 与 127.0.0.1 的 5173/5174/5175。
 - 金额/价格用字符串 Decimal 传输,前端仅展示,不做浮点运算。

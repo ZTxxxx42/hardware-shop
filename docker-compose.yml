@@ -4,8 +4,8 @@
 name: hardware-shop
 # 用法:
 #   1) cp .env.example .env 并按环境修改(密钥/口令只经 .env 注入,不进镜像)
-#   2) 先构建两个 Web 前端产物(见 docs/deployment/部署说明.md 第 4 节)
-#   3) docker compose up -d --build
+#   2) docker compose up -d --build
+#      # 一键:后端镜像 + 两个前端多阶段构建 + nginx + postgres,无需宿主机 Node/npm
 
 services:
   db:
@@ -48,17 +48,20 @@ services:
     #   - "${API_PORT:-8000}:8000"
 
   nginx:
-    image: nginx:1.27-alpine
+    build:
+      context: .
+      dockerfile: deploy/nginx.Dockerfile
+      args:
+        # 同源部署默认 /;前后端分离时在 .env 覆盖为完整 HTTPS API 域名
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/}
     restart: unless-stopped
     ports:
       - "${HTTP_PORT:-80}:80"
       # HTTPS:证书就绪后取消注释(步骤见 docs/deployment/部署说明.md)
       # - "${HTTPS_PORT:-443}:443"
-    volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/shop-web/dist:/usr/share/nginx/html/shop-web:ro
-      - ./frontend/admin-web/dist:/usr/share/nginx/html/admin-web:ro
-      # - ./deploy/certs:/etc/nginx/certs:ro
+    # HTTPS 启用时,证书运行时挂载(不烘焙进镜像):
+    # volumes:
+    #   - ./deploy/certs:/etc/nginx/certs:ro
     depends_on:
       api:
         condition: service_healthy
