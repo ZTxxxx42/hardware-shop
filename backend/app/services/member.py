@@ -1,6 +1,8 @@
 """会员用例:资料、地址、等级信息。"""
 from __future__ import annotations
 
+import datetime as dt
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -13,6 +15,7 @@ from app.models import (  # 由 database agent 提供
     User,
 )
 from app.schemas.member import (
+    AccountDeletionOut,
     AddressCreate,
     AddressOut,
     AddressUpdate,
@@ -20,6 +23,20 @@ from app.schemas.member import (
     ProfileOut,
     ProfileUpdate,
 )
+
+
+def request_account_deletion(db: Session, user: AuthUser) -> AccountDeletionOut:
+    user_row = db.get(User, user.id)
+    if user_row is None:
+        raise NotFoundError("用户不存在")
+    if user_row.deletion_status != "PENDING":
+        user_row.deletion_status = "PENDING"
+        user_row.deletion_requested_at = dt.datetime.now(dt.timezone.utc)
+        db.commit()
+    return AccountDeletionOut(
+        deletion_status=user_row.deletion_status,
+        deletion_requested_at=user_row.deletion_requested_at,
+    )
 
 
 def get_profile(db: Session, user: AuthUser) -> ProfileOut:

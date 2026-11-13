@@ -47,3 +47,13 @@ class InvalidStateTransitionError(BusinessError):
 
 class PaymentVerifyError(BusinessError):
     code = "PAYMENT_VERIFY_FAILED"
+
+
+class WeChatAuthError(AppError):
+    status_code = 401
+    code = "WECHAT_AUTH_FAILED"
+
+
+class WeChatServiceError(AppError):
+    status_code = 503
+    code = "WECHAT_SERVICE_UNAVAILABLE"

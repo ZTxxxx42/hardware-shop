@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.deps import get_db, require_member
 from app.core.security import AuthUser
 from app.schemas.member import (
+    AccountDeletionOut,
     AddressCreate,
     AddressOut,
     AddressUpdate,
@@ -17,6 +18,14 @@ from app.schemas.member import (
 from app.services import member as member_service
 
 router = APIRouter(prefix="/member", tags=["会员"], dependencies=[Depends(require_member)])
+
+
+@router.post("/account-deletion", response_model=AccountDeletionOut, status_code=202)
+def request_account_deletion(
+    db: Session = Depends(get_db),
+    user: AuthUser = Depends(require_member),
+) -> AccountDeletionOut:
+    return member_service.request_account_deletion(db, user)
 
 
 @router.get("/profile", response_model=ProfileOut)

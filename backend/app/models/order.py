@@ -50,6 +50,10 @@ class Order(IntPkMixin, TimestampMixin, Base):
     receiver_phone: Mapped[str] = mapped_column(String(20), nullable=False)
     receiver_region: Mapped[str] = mapped_column(String(255), nullable=False)
     receiver_detail: Mapped[str] = mapped_column(String(512), nullable=False)
+    remark: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    carrier: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    tracking_no: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    shipped_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
     user: Mapped["User"] = relationship(back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship(

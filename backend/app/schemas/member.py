@@ -1,6 +1,8 @@
 """会员资料与地址 schema。"""
 from __future__ import annotations
 
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 from app.schemas.common import ORMModel
@@ -43,3 +45,8 @@ class LevelOut(BaseModel):
     code: str
     name: str
     sort: int = 0
+
+
+class AccountDeletionOut(BaseModel):
+    deletion_status: str
+    deletion_requested_at: datetime

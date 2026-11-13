@@ -27,7 +27,13 @@ from app.models import (  # 由 database agent 提供
     Product,
     ProductPrice,
 )
-from app.schemas.order import OrderBrief, OrderCreate, OrderDetail, OrderItemOut
+from app.schemas.order import (
+    OrderBrief,
+    OrderCreate,
+    OrderDetail,
+    OrderItemOut,
+    OrderShipRequest,
+)
 from app.schemas.payment import PaymentOut
 from app.services.common import calculate_freight
 
@@ -71,6 +77,10 @@ def _order_detail(db: Session, order: Order) -> OrderDetail:
         product_amount=order.product_amount,
         freight_amount=order.freight_amount,
         total_amount=order.total_amount,
+        remark=order.remark,
+        carrier=order.carrier,
+        tracking_no=order.tracking_no,
+        shipped_at=order.shipped_at,
         created_at=order.created_at,
         items=items,
         address_snapshot=_address_snapshot(order),
@@ -114,6 +124,7 @@ def create_order(db: Session, user: AuthUser, payload: OrderCreate) -> OrderDeta
         receiver_phone=address.phone,
         receiver_region=address.region,
         receiver_detail=address.detail,
+        remark=payload.remark,
         created_at=dt.datetime.now(dt.timezone.utc),
     )
     db.add(order)
@@ -159,6 +170,10 @@ def list_orders(db: Session, user: AuthUser) -> list[OrderBrief]:
             product_amount=o.product_amount,
             freight_amount=o.freight_amount,
             total_amount=o.total_amount,
+            remark=o.remark,
+            carrier=o.carrier,
+            tracking_no=o.tracking_no,
+            shipped_at=o.shipped_at,
             created_at=o.created_at,
         )
         for o in rows
@@ -200,12 +215,15 @@ def confirm_receipt(db: Session, user: AuthUser, order_id: int) -> OrderDetail:
     return _order_detail(db, order)
 
 
-def ship_order(db: Session, order_id: int) -> OrderDetail:
-    """后台发货:已支付 → 已发货(状态机约束在领域层)。"""
+def ship_order(db: Session, order_id: int, payload: OrderShipRequest) -> OrderDetail:
+    """后台发货:仅在合法的已支付 → 已发货流转中写入物流信息。"""
     order = db.get(Order, order_id)
     if order is None:
         raise NotFoundError("订单不存在")
     assert_transition(order.status, OrderStatus.SHIPPED)
+    order.carrier = payload.carrier
+    order.tracking_no = payload.tracking_no
+    order.shipped_at = dt.datetime.now(dt.timezone.utc)
     order.status = OrderStatus.SHIPPED
     db.commit()
     return _order_detail(db, order)

@@ -1,6 +1,8 @@
 """认证用例:注册、登录、签发 token。"""
 from __future__ import annotations
 
+import secrets
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -8,7 +10,14 @@ from app.core.config import settings
 from app.core.exceptions import BusinessError
 from app.core.security import create_access_token, hash_password, verify_password
 from app.models import User  # 由 database agent 提供
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserBrief
+from app.schemas.auth import (
+    LoginRequest,
+    RegisterRequest,
+    TokenResponse,
+    UserBrief,
+    WeChatLoginRequest,
+)
+from app.services.wechat import WeChatMpClient
 
 
 def _level_code(user: User) -> str | None:
@@ -54,4 +63,28 @@ def login(db: Session, payload: LoginRequest) -> TokenResponse:
     user = db.scalars(select(User).where(User.username == payload.username)).first()
     if user is None or not verify_password(payload.password, user.password_hash):
         raise BusinessError("用户名或密码错误")
+    return _issue_token(user)
+
+
+def wechat_login(
+    db: Session,
+    payload: WeChatLoginRequest,
+    client: WeChatMpClient | None = None,
+) -> TokenResponse:
+    session = (client or WeChatMpClient()).jscode2session(payload.code)
+    user = db.scalars(select(User).where(User.openid == session.openid)).first()
+    if user is None:
+        user = User(
+            username=f"wx_{secrets.token_urlsafe(18)}",
+            password_hash=hash_password(secrets.token_urlsafe(48)),
+            role="member",
+            openid=session.openid,
+            unionid=session.unionid,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    elif session.unionid and user.unionid != session.unionid:
+        user.unionid = session.unionid
+        db.commit()
     return _issue_token(user)

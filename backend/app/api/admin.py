@@ -29,7 +29,7 @@ from app.schemas.admin import (
 from app.schemas.catalog import CategoryOut, ProductBrief, ProductPriceItem
 from app.schemas.common import PageResult
 from app.schemas.member import ProfileOut
-from app.schemas.order import OrderBrief, OrderDetail
+from app.schemas.order import OrderBrief, OrderDetail, OrderShipRequest
 from app.schemas.payment import PaymentOut
 from app.services import admin as admin_service
 from app.services import order as order_service
@@ -194,6 +194,10 @@ def list_orders(db: Session = Depends(get_db)) -> list[OrderBrief]:
             product_amount=o.product_amount,
             freight_amount=o.freight_amount,
             total_amount=o.total_amount,
+            remark=o.remark,
+            carrier=o.carrier,
+            tracking_no=o.tracking_no,
+            shipped_at=o.shipped_at,
             created_at=o.created_at,
         )
         for o in rows
@@ -201,8 +205,12 @@ def list_orders(db: Session = Depends(get_db)) -> list[OrderBrief]:
 
 
 @router.patch("/orders/{order_id}/ship", response_model=OrderDetail)
-def ship_order(order_id: int, db: Session = Depends(get_db)) -> OrderDetail:
-    return order_service.ship_order(db, order_id)
+def ship_order(
+    order_id: int,
+    payload: OrderShipRequest,
+    db: Session = Depends(get_db),
+) -> OrderDetail:
+    return order_service.ship_order(db, order_id, payload)
 
 
 # ---------- 支付流水 ----------

@@ -1,9 +1,10 @@
 """用户域模型：user / customer_level / member_profile / address。"""
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import BigInteger, ForeignKey, Integer, String, text
+from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, IntPkMixin, TimestampMixin
@@ -21,6 +22,14 @@ class User(IntPkMixin, TimestampMixin, Base):
         server_default=text("'member'"),
     )
     phone: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    openid: Mapped[Optional[str]] = mapped_column(String(64), unique=True, nullable=True)
+    unionid: Mapped[Optional[str]] = mapped_column(String(64), index=True, nullable=True)
+    deletion_status: Mapped[str] = mapped_column(
+        String(16), nullable=False, default="NONE", server_default=text("'NONE'")
+    )
+    deletion_requested_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
     profile: Mapped[Optional["MemberProfile"]] = relationship(
         back_populates="user",

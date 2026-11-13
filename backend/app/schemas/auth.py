@@ -1,7 +1,9 @@
 """认证相关 schema。"""
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from typing import Annotated
+
+from pydantic import BaseModel, Field, StringConstraints
 
 from app.schemas.common import ORMModel
 
@@ -15,6 +17,13 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+
+class WeChatLoginRequest(BaseModel):
+    code: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
+    ]
 
 
 class UserBrief(ORMModel):
