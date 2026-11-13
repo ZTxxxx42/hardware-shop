@@ -1,4 +1,4 @@
-# 恒固五金 · admin-web 管理后台
+# 恒泰五金 · admin-web 管理后台
 
 五金商贸 MVP 的后台管理端脚手架，基于 Vue 3 + TypeScript + Vite + Element Plus + Pinia + Vue Router。当前使用静态示例数据渲染，所有新增、编辑、删除、发货等操作只修改浏览器内存，不会请求后端或持久化。
 

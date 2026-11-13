@@ -48,7 +48,7 @@ async function submit() {
         <p>商品、分级价格、客户与订单集中管理，<br />让日常商贸业务清晰可查。</p>
         <div class="story-lines"><span>商品与库存维护</span><span>客户分级定价</span><span>订单支付对账</span></div>
       </div>
-      <small>HENGGU HARDWARE · ADMIN CONSOLE</small>
+      <small>HENGTAI HARDWARE · ADMIN CONSOLE</small>
     </section>
     <section class="login-form-section">
       <div class="login-box">
