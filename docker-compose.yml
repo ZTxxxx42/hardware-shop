@@ -1,0 +1,67 @@
+# 五金商贸 MVP · 单机 Docker Compose
+# 拓扑:nginx(静态 + 反代) -> api(FastAPI + uvicorn) -> db(PostgreSQL 16)
+# 显式项目名(目录为中文时 Compose 无法自动推导,必须指定)
+name: hardware-shop
+# 用法:
+#   1) cp .env.example .env 并按环境修改(密钥/口令只经 .env 注入,不进镜像)
+#   2) 先构建两个 Web 前端产物(见 docs/deployment/部署说明.md 第 4 节)
+#   3) docker compose up -d --build
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hardware_shop}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # 默认不向宿主机暴露 5432;需本地直连调试时取消注释
+    # ports:
+    #   - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      DEBUG: ${DEBUG:-false}
+      SECRET_KEY: ${SECRET_KEY:-please-change-me}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-hardware_shop}
+      CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost","http://127.0.0.1"]}'
+      WECHAT_PAY_API_V3_KEY: ${WECHAT_PAY_API_V3_KEY:-}
+      ALIPAY_APP_PRIVATE_KEY: ${ALIPAY_APP_PRIVATE_KEY:-}
+      SEED_DATA: ${SEED_DATA:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    # 默认仅内网;需宿主机直连调试时取消注释
+    # ports:
+    #   - "${API_PORT:-8000}:8000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      # HTTPS:证书就绪后取消注释(步骤见 docs/deployment/部署说明.md)
+      # - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/shop-web/dist:/usr/share/nginx/html/shop-web:ro
+      - ./frontend/admin-web/dist:/usr/share/nginx/html/admin-web:ro
+      # - ./deploy/certs:/etc/nginx/certs:ro
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
