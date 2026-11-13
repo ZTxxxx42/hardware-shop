@@ -207,8 +207,8 @@ onShow(() => {
 }
 
 .status-tag.is-primary {
-  color: #1559ab;
-  background: #eaf3ff;
+  color: var(--brand-dark);
+  background: var(--brand-light);
 }
 
 .status-tag.is-success {

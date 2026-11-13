@@ -8,64 +8,94 @@
   "pages": [
     {
       "path": "pages/index/index",
-      "style": { "navigationBarTitleText": "恒泰五金" }
+      "style": {
+        "navigationBarTitleText": "恒泰五金"
+      }
     },
     {
       "path": "pages/category/index",
-      "style": { "navigationBarTitleText": "产品分类" }
+      "style": {
+        "navigationBarTitleText": "产品分类"
+      }
     },
     {
       "path": "pages/cart/index",
-      "style": { "navigationBarTitleText": "购物车" }
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
     },
     {
       "path": "pages/user/index",
-      "style": { "navigationBarTitleText": "我的" }
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
     },
     {
       "path": "pages/product/index",
-      "style": { "navigationBarTitleText": "产品中心" }
+      "style": {
+        "navigationBarTitleText": "产品中心"
+      }
     },
     {
       "path": "pages/product-detail/index",
-      "style": { "navigationBarTitleText": "商品详情" }
+      "style": {
+        "navigationBarTitleText": "商品详情"
+      }
     },
     {
       "path": "pages/search/index",
-      "style": { "navigationBarTitleText": "搜索商品" }
+      "style": {
+        "navigationBarTitleText": "搜索商品"
+      }
     },
     {
       "path": "pages/checkout/index",
-      "style": { "navigationBarTitleText": "结算下单" }
+      "style": {
+        "navigationBarTitleText": "结算下单"
+      }
     },
     {
       "path": "pages/orders/index",
-      "style": { "navigationBarTitleText": "订单中心" }
+      "style": {
+        "navigationBarTitleText": "订单中心"
+      }
     },
     {
       "path": "pages/order-detail/index",
-      "style": { "navigationBarTitleText": "订单详情" }
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
     },
     {
       "path": "pages/address/index",
-      "style": { "navigationBarTitleText": "地址管理" }
+      "style": {
+        "navigationBarTitleText": "地址管理"
+      }
     },
     {
       "path": "pages/login/index",
-      "style": { "navigationBarTitleText": "会员登录" }
+      "style": {
+        "navigationBarTitleText": "会员登录"
+      }
+    },
+    {
+      "path": "pages/legal/index",
+      "style": {
+        "navigationBarTitleText": "协议与隐私"
+      }
     }
   ],
   "globalStyle": {
-    "navigationBarBackgroundColor": "#1a6fd6",
-    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#fffdf8",
+    "navigationBarTextStyle": "black",
     "navigationBarTitleText": "恒泰五金",
-    "backgroundColor": "#f5f8fb",
+    "backgroundColor": "#f6f2ea",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#93a0ad",
-    "selectedColor": "#1a6fd6",
-    "backgroundColor": "#ffffff",
+    "color": "#8a877d",
+    "selectedColor": "#c8521f",
+    "backgroundColor": "#fffdf8",
     "borderStyle": "white",
     "list": [
       {

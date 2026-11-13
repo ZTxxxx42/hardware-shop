@@ -10,6 +10,8 @@ import ProductCard from '@/components/ProductCard.vue'
 
 const categories = ref<Category[]>([])
 const products = ref<Product[]>([])
+const categoriesLoading = ref(true)
+const productsLoading = ref(true)
 const categoriesError = ref('')
 const productsError = ref('')
 
@@ -33,6 +35,7 @@ async function loadHome() {
     categories.value = []
     categoriesError.value = getErrorMessage(categoryResult.reason, '分类加载失败')
   }
+  categoriesLoading.value = false
 
   if (productResult.status === 'fulfilled') {
     products.value = productResult.value.items
@@ -40,6 +43,7 @@ async function loadHome() {
     products.value = []
     productsError.value = getErrorMessage(productResult.reason, '热销商品加载失败')
   }
+  productsLoading.value = false
 }
 
 function goSearch() {
@@ -64,17 +68,17 @@ onShow(loadHome)
 <template>
   <view class="home">
     <view class="hero">
-      <image class="hero__bg" src="/static/scenes/hero-industrial.svg" mode="aspectFill" />
-      <view class="hero__shade" />
+      <view class="hero__rail" />
       <view class="hero__content">
-        <view class="hero__eyebrow">
-          <view class="hero__line" />
-          <text>专业 · 品质 · 共赢</text>
-          <view class="hero__line" />
+        <text class="hero__eyebrow">HENGTAI / INDUSTRIAL SUPPLY</text>
+        <view class="hero__title">五金采购<text class="hero__accent">一站配齐</text></view>
+        <text class="hero__subtitle">紧固件 · 电动工具 · 五金配件，按需选型</text>
+        <view class="hero__meta">
+          <view class="hero__meta-item"><text class="hero__meta-value">按级</text><text class="hero__meta-label">价格实时计算</text></view>
+          <view class="hero__meta-item"><text class="hero__meta-value">可查</text><text class="hero__meta-label">订单进度追踪</text></view>
+          <view class="hero__meta-item"><text class="hero__meta-value">可靠</text><text class="hero__meta-label">现货快速发货</text></view>
         </view>
-        <view class="hero__title">一站式<text class="hero__accent">五金</text>商贸平台</view>
-        <view class="hero__subtitle">优质五金产品 · 可靠品质保障</view>
-        <view class="hero__cta" @tap="goProducts">立即选购</view>
+        <view class="hero__cta" @tap="goProducts">进入产品中心</view>
       </view>
     </view>
 
@@ -89,7 +93,9 @@ onShow(loadHome)
           <view class="section-heading__title">产品分类</view>
           <view class="section-heading__more" @tap="goAllCategories">全部分类 ›</view>
         </view>
-        <view v-if="categoriesError" class="home__note" @tap="loadHome">{{ categoriesError }}，点击重试</view>
+        <view v-if="categoriesLoading" class="home__note"><view class="home__loading" />正在加载分类...</view>
+        <view v-else-if="categoriesError" class="home__note" @tap="loadHome">{{ categoriesError }}，点击重试</view>
+        <view v-else-if="categories.length === 0" class="home__note">暂无产品分类</view>
         <view v-else class="category-grid">
           <view v-for="category in categories.slice(0, 6)" :key="category.id" class="category-item" @tap="goCategory(category.id)">
             <view class="category-item__icon">
@@ -105,7 +111,8 @@ onShow(loadHome)
           <view class="section-heading__title">热销推荐</view>
           <view class="section-heading__more" @tap="goProducts">查看更多 ›</view>
         </view>
-        <view v-if="productsError" class="home__note" @tap="loadHome">{{ productsError }}，点击重试</view>
+        <view v-if="productsLoading" class="home__note"><view class="home__loading" />正在加载热销商品...</view>
+        <view v-else-if="productsError" class="home__note" @tap="loadHome">{{ productsError }}，点击重试</view>
         <view v-else-if="products.length === 0" class="home__note">暂无热销商品</view>
         <view v-else class="products-grid">
           <view v-for="product in products" :key="product.id" class="products-grid__cell">
@@ -124,225 +131,46 @@ onShow(loadHome)
       <view class="brand-footer">
         <image class="brand-footer__logo" src="/static/brand/logo.svg" mode="aspectFit" />
         <text class="brand-footer__name">恒泰五金 · 工业供应</text>
-        <text class="brand-footer__slogan">专业 · 品质 · 共赢</text>
+        <text class="brand-footer__slogan">品质可查 · 采购可追踪</text>
       </view>
     </view>
   </view>
 </template>
 
 <style scoped>
-.hero {
-  position: relative;
-  height: 420rpx;
-  overflow: hidden;
-  background: #0c56ad;
-}
-
-.hero__bg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero__shade {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(160deg, rgb(6 45 86 / 88%) 0%, rgb(12 86 173 / 76%) 55%, rgb(26 111 214 / 46%) 100%);
-}
-
-.hero__content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0 40rpx 20rpx;
-  color: #ffffff;
-}
-
-.hero__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-bottom: 18rpx;
-  font-size: 24rpx;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-}
-
-.hero__line {
-  width: 40rpx;
-  height: 2rpx;
-  background: #b9d8f1;
-}
-
-.hero__title {
-  font-size: 56rpx;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-}
-
-.hero__accent {
-  color: #38a9f5;
-}
-
-.hero__subtitle {
-  margin-top: 18rpx;
-  color: #eef6fc;
-  font-size: 26rpx;
-  letter-spacing: 0.04em;
-}
-
-.hero__cta {
-  display: inline-flex;
-  align-items: center;
-  min-height: 64rpx;
-  margin-top: 30rpx;
-  padding: 0 36rpx;
-  border: 1rpx solid rgb(255 255 255 / 30%);
-  border-radius: 32rpx;
-  color: #ffffff;
-  background: linear-gradient(110deg, #278de4, #0865c5);
-  box-shadow: 0 10rpx 22rpx rgb(0 56 123 / 26%);
-  font-size: 26rpx;
-  font-weight: 600;
-}
-
-.home__body {
-  padding-top: 0;
-}
-
-.search-pill {
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
-  height: 88rpx;
-  margin-top: -44rpx;
-  padding: 0 30rpx;
-  border-radius: 44rpx;
-  background: #ffffff;
-  box-shadow: 0 14rpx 34rpx rgb(27 91 149 / 14%);
-}
-
-.search-pill__icon {
-  color: var(--brand);
-  font-size: 40rpx;
-}
-
-.search-pill__placeholder {
-  color: #9aa6b2;
-  font-size: 26rpx;
-}
-
-.category-grid {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.category-item {
-  display: flex;
-  min-width: 0;
-  width: 33.33%;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 24rpx;
-  gap: 10rpx;
-}
-
-.category-item__icon {
-  width: 104rpx;
-  height: 104rpx;
-}
-
-.category-item__name {
-  color: #263646;
-  font-size: 24rpx;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.products-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.products-grid__cell {
-  width: calc(50% - 10rpx);
-  margin-bottom: 20rpx;
-}
-
-.home__note {
-  padding: 24rpx 0;
-  color: #8b97a4;
-  font-size: 24rpx;
-  text-align: center;
-}
-
-.advantage-card {
-  display: flex;
-  margin-top: 24rpx;
-  padding: 30rpx 12rpx;
-  border-radius: 20rpx;
-  background: #eaf2fc;
-}
-
-.advantage-item {
-  display: flex;
-  width: 33.33%;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rpx;
-}
-
-.advantage-item + .advantage-item {
-  border-left: 1rpx solid #d5e0eb;
-}
-
-.advantage-item__title {
-  color: #243547;
-  font-size: 27rpx;
-  font-weight: 650;
-}
-
-.advantage-item__subtitle {
-  color: #7b8999;
-  font-size: 21rpx;
-}
-
-.brand-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8rpx;
-  margin-top: 40rpx;
-  padding: 40rpx 0 20rpx;
-  color: #7b8998;
-}
-
-.brand-footer__logo {
-  width: 96rpx;
-  height: 96rpx;
-}
-
-.brand-footer__name {
-  margin-top: 10rpx;
-  font-size: 26rpx;
-  font-weight: 600;
-}
-
-.brand-footer__slogan {
-  font-size: 22rpx;
-  letter-spacing: 0.08em;
-}
+.home { min-height: 100vh; }
+.hero { position: relative; padding: 44rpx 36rpx 76rpx; overflow: hidden; background: var(--brand-deep); color: var(--white); }
+.hero__rail { position: absolute; top: 0; left: 0; bottom: 0; width: 10rpx; background: var(--brand); }
+.hero__content { position: relative; }
+.hero__eyebrow { display: block; color: #d6d1c7; font-family: Arial, sans-serif; font-size: 20rpx; letter-spacing: 0.16em; }
+.hero__title { margin-top: 20rpx; font-size: 58rpx; font-weight: 800; line-height: 1.2; letter-spacing: 0.03em; }
+.hero__accent { color: var(--brand); }
+.hero__subtitle { display: block; margin-top: 18rpx; color: #d6d1c7; font-size: 25rpx; }
+.hero__meta { display: flex; gap: 30rpx; margin-top: 34rpx; padding: 22rpx 0; border-top: 1rpx solid #494a44; border-bottom: 1rpx solid #494a44; }
+.hero__meta-item { display: flex; flex-direction: column; gap: 4rpx; }
+.hero__meta-value { color: var(--white); font-size: 27rpx; font-weight: 700; }
+.hero__meta-label { color: #a8a49a; font-size: 19rpx; }
+.hero__cta { display: inline-flex; align-items: center; min-height: 68rpx; margin-top: 34rpx; padding: 0 34rpx; color: var(--white); background: var(--brand); font-size: 26rpx; font-weight: 600; }
+.home__body { padding-top: 0; }
+.search-pill { display: flex; align-items: center; gap: 14rpx; height: 88rpx; margin-top: -44rpx; padding: 0 30rpx; border: 1rpx solid var(--line); border-radius: 44rpx; background: var(--white); box-shadow: 0 14rpx 34rpx rgb(60 48 32 / 12%); }
+.search-pill__icon { color: var(--brand); font-size: 40rpx; }
+.search-pill__placeholder { color: var(--placeholder); font-size: 26rpx; }
+.category-grid { display: flex; flex-wrap: wrap; }
+.category-item { display: flex; min-width: 0; width: 33.33%; flex-direction: column; align-items: center; margin-bottom: 24rpx; gap: 10rpx; }
+.category-item__icon { width: 104rpx; height: 104rpx; }
+.category-item__name { color: var(--ink-soft); font-size: 24rpx; font-weight: 600; white-space: nowrap; }
+.products-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.products-grid__cell { width: calc(50% - 10rpx); margin-bottom: 20rpx; }
+.home__note { display: flex; align-items: center; justify-content: center; gap: 14rpx; padding: 24rpx 0; color: var(--muted); font-size: 24rpx; text-align: center; }
+.home__loading { width: 30rpx; height: 30rpx; border: 4rpx solid var(--surface-deep); border-top-color: var(--brand); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.advantage-card { display: flex; margin-top: 24rpx; padding: 30rpx 12rpx; border-top: 1rpx solid var(--line); border-bottom: 1rpx solid var(--line); background: var(--surface-deep); }
+.advantage-item { display: flex; width: 33.33%; flex-direction: column; align-items: center; gap: 4rpx; }
+.advantage-item + .advantage-item { border-left: 1rpx solid var(--line-dark); }
+.advantage-item__title { color: var(--ink-soft); font-size: 27rpx; font-weight: 650; }
+.advantage-item__subtitle { color: var(--muted); font-size: 21rpx; }
+.brand-footer { display: flex; flex-direction: column; align-items: center; gap: 8rpx; margin-top: 40rpx; padding: 40rpx 0 20rpx; color: var(--muted); }
+.brand-footer__logo { width: 96rpx; height: 96rpx; }
+.brand-footer__name { margin-top: 10rpx; font-size: 26rpx; font-weight: 600; }
+.brand-footer__slogan { font-size: 22rpx; letter-spacing: 0.08em; }
 </style>

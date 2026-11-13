@@ -9,12 +9,26 @@ export interface RequestOptions {
 }
 
 interface ApiErrorBody {
+  code?: string
   message?: string
   detail?: unknown
 }
 
+export class ApiRequestError extends Error {
+  readonly status: number
+  readonly code: string
+
+  constructor(message: string, status: number, code = '') {
+    super(message)
+    this.name = 'ApiRequestError'
+    this.status = status
+    this.code = code
+  }
+}
+
 function buildUrl(path: string): string {
-  const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+  const fallback = import.meta.env.DEV ? 'http://127.0.0.1:8000' : 'https://api.example.com'
+  const baseURL = import.meta.env.VITE_API_BASE_URL || fallback
   return `${baseURL.replace(/\/$/, '')}${path}`
 }
 
@@ -41,7 +55,7 @@ export function request<T>(options: RequestOptions): Promise<T> {
           uni.$emit('auth:unauthorized')
         }
         const body = res.data as ApiErrorBody | undefined
-        reject(new Error(body?.message || `请求失败(${status})`))
+        reject(new ApiRequestError(body?.message || `请求失败(${status})`, status, body?.code))
       },
       fail: (error) => {
         reject(new Error(error.errMsg || '网络异常，请检查网络后重试'))

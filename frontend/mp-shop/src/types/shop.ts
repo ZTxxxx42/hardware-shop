@@ -49,7 +49,7 @@ export interface AddressPayload {
 
 export interface OrderItem {
   id: number
-  product_id: number
+  product_id: number | null
   product_name: string
   price: string
   quantity: number
@@ -73,6 +73,11 @@ export interface Payment {
   paid_at: string | null
 }
 
+export interface AccountDeletion {
+  deletion_status: string
+  deletion_requested_at: string
+}
+
 export interface OrderBrief {
   id: number
   order_no: string
@@ -80,12 +85,16 @@ export interface OrderBrief {
   product_amount: string
   freight_amount: string
   total_amount: string
+  remark: string | null
+  carrier: string | null
+  tracking_no: string | null
+  shipped_at: string | null
   created_at: string
 }
 
 export interface OrderDetail extends OrderBrief {
   items: OrderItem[]
-  address_snapshot: AddressSnapshot
+  address_snapshot: AddressSnapshot | null
   payments: Payment[]
 }
 

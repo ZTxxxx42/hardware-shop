@@ -27,10 +27,10 @@ function change(delta: number) {
 .stepper {
   display: inline-flex;
   align-items: center;
-  border: 1rpx solid #d7e4f2;
+  border: 1rpx solid var(--line-dark);
   border-radius: 10rpx;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--white);
 }
 
 .stepper__btn {
@@ -44,7 +44,7 @@ function change(delta: number) {
 }
 
 .stepper__btn:active {
-  background: #eef5fd;
+  background: var(--brand-light);
 }
 
 .stepper__value {
@@ -52,15 +52,15 @@ function change(delta: number) {
   min-width: 76rpx;
   height: 60rpx;
   align-items: center; justify-content: center;
-  border-left: 1rpx solid #e5ebf2;
-  border-right: 1rpx solid #e5ebf2;
-  color: #26384c;
+  border-left: 1rpx solid var(--line);
+  border-right: 1rpx solid var(--line);
+  color: var(--ink-soft);
   font-size: 26rpx;
   font-weight: 600;
 }
 
 .stepper__btn.is-disabled {
-  color: #c4cdd6;
-  background: #f5f7fa;
+  color: #c6c1b7;
+  background: var(--surface-deep);
 }
 </style>

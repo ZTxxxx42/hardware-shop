@@ -75,7 +75,7 @@ const icons = {
 
 const colors = {
   gray: [147, 160, 173],
-  blue: [26, 111, 214],
+  blue: [200, 82, 31],
 }
 
 function render(pred, color) {

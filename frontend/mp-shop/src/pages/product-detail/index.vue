@@ -154,185 +154,34 @@ onLoad((options) => {
 </template>
 
 <style scoped>
-.detail-art {
-  height: 520rpx;
-  padding: 48rpx;
-  background: radial-gradient(circle at 50% 42%, #ffffff 20%, #eef3f8 82%);
-}
-
-.detail-card {
-  margin-top: 24rpx;
-  padding: 30rpx 28rpx;
-}
-
-.detail-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16rpx;
-}
-
-.status-tag {
-  padding: 6rpx 18rpx;
-  border-radius: 10rpx;
-  color: #7a8795;
-  background: #f0f3f7;
-  font-size: 20rpx;
-}
-
-.status-tag.is-sale {
-  color: #14833c;
-  background: #e8f7ee;
-}
-
-.detail-card__name {
-  margin-top: 16rpx;
-  font-size: 44rpx;
-  font-weight: 750;
-  line-height: 1.35;
-}
-
-.detail-card__model {
-  margin-top: 10rpx;
-  color: #748396;
-  font-size: 25rpx;
-}
-
-.detail-card__desc {
-  margin-top: 24rpx;
-  color: #657689;
-  font-size: 25rpx;
-  line-height: 1.9;
-}
-
-.price-panel {
-  margin-top: 28rpx;
-  padding: 24rpx;
-  border-left: 6rpx solid var(--brand);
-  border-radius: 8rpx;
-  background: #f3f8fd;
-}
-
-.price-panel__label {
-  color: #71859a;
-  font-size: 22rpx;
-}
-
-.price-panel__row {
-  display: flex;
-  align-items: baseline;
-  gap: 18rpx;
-  margin-top: 4rpx;
-}
-
-.price-panel__price {
-  color: var(--price);
-  font-family: Arial, sans-serif;
-  font-size: 52rpx;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.price-panel__retail {
-  color: #94a1af;
-  font-size: 22rpx;
-  text-decoration: line-through;
-}
-
-.price-panel__tip {
-  display: block;
-  margin-top: 4rpx;
-  color: #8797a8;
-  font-size: 20rpx;
-}
-
-.quick-specs {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 28rpx;
-}
-
-.quick-specs__item {
-  display: flex;
-  min-width: 0;
-  width: 33.33%;
-  flex-direction: column;
-  gap: 4rpx;
-  margin-bottom: 16rpx;
-}
-
-.quick-specs__label {
-  color: #95a2af;
-  font-size: 20rpx;
-}
-
-.quick-specs__value {
-  color: #3c4e61;
-  font-size: 24rpx;
-}
-
-.quick-specs__link {
-  color: var(--brand);
-}
-
-.buy-bar {
-  margin-top: 24rpx;
-  padding: 28rpx;
-}
-
-.buy-bar__qty {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20rpx;
-}
-
-.buy-bar__label {
-  color: #46586b;
-  font-size: 25rpx;
-}
-
-.buy-bar__actions {
-  display: flex;
-  gap: 20rpx;
-  margin-top: 28rpx;
-}
-
-.buy-bar__btn {
-  min-height: 88rpx;
-  flex: 1;
-  border-radius: 14rpx;
-}
-
-.spec-card {
-  margin-top: 24rpx;
-  padding: 28rpx;
-}
-
-.spec-card__title {
-  font-size: 32rpx;
-  font-weight: 700;
-}
-
-.spec-row {
-  display: flex;
-  gap: 20rpx;
-  padding: 22rpx 0;
-  border-bottom: 1rpx solid #edf1f5;
-  font-size: 24rpx;
-}
-
-.spec-row:last-child {
-  border-bottom: 0;
-}
-
-.spec-row__name {
-  width: 200rpx;
-  flex: 0 0 auto;
-  color: #8593a2;
-}
-
-.spec-row__value {
-  color: #3c4e61;
-}
+.detail-art { height: 520rpx; padding: 48rpx; background: radial-gradient(circle at 50% 42%, #fffdf8 20%, #f2ede2 82%); }
+.detail-card { margin-top: 24rpx; padding: 30rpx 28rpx; }
+.detail-card__top { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.status-tag { padding: 6rpx 18rpx; border-radius: 10rpx; color: var(--muted); background: var(--surface-deep); font-size: 20rpx; }
+.status-tag.is-sale { color: var(--success); background: var(--success-light); }
+.detail-card__name { margin-top: 16rpx; font-size: 44rpx; font-weight: 750; line-height: 1.35; }
+.detail-card__model { margin-top: 10rpx; color: var(--muted); font-size: 25rpx; }
+.detail-card__desc { margin-top: 24rpx; color: var(--ink-soft); font-size: 25rpx; line-height: 1.9; }
+.price-panel { margin-top: 28rpx; padding: 24rpx; border-left: 6rpx solid var(--brand); border-radius: 8rpx; background: var(--brand-light); }
+.price-panel__label { color: var(--brand-dark); font-size: 22rpx; }
+.price-panel__row { display: flex; align-items: baseline; gap: 18rpx; margin-top: 4rpx; }
+.price-panel__price { color: var(--price); font-family: Arial, sans-serif; font-size: 52rpx; font-weight: 700; line-height: 1.3; }
+.price-panel__retail { color: var(--muted); font-size: 22rpx; text-decoration: line-through; }
+.price-panel__tip { display: block; margin-top: 4rpx; color: var(--muted); font-size: 20rpx; }
+.quick-specs { display: flex; flex-wrap: wrap; margin-top: 28rpx; }
+.quick-specs__item { display: flex; min-width: 0; width: 33.33%; flex-direction: column; gap: 4rpx; margin-bottom: 16rpx; }
+.quick-specs__label { color: var(--muted); font-size: 20rpx; }
+.quick-specs__value { color: var(--ink-soft); font-size: 24rpx; }
+.quick-specs__link { color: var(--brand-dark); }
+.buy-bar { margin-top: 24rpx; padding: 28rpx; }
+.buy-bar__qty { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; }
+.buy-bar__label { color: var(--ink-soft); font-size: 25rpx; }
+.buy-bar__actions { display: flex; gap: 20rpx; margin-top: 28rpx; }
+.buy-bar__btn { min-height: 88rpx; flex: 1; border-radius: var(--radius-sm); }
+.spec-card { margin-top: 24rpx; padding: 28rpx; }
+.spec-card__title { font-size: 32rpx; font-weight: 700; }
+.spec-row { display: flex; gap: 20rpx; padding: 22rpx 0; border-bottom: 1rpx solid var(--line); font-size: 24rpx; }
+.spec-row:last-child { border-bottom: 0; }
+.spec-row__name { width: 200rpx; flex: 0 0 auto; color: var(--muted); }
+.spec-row__value { color: var(--ink-soft); }
 </style>

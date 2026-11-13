@@ -1,7 +1,10 @@
 import { request } from './http'
-import type { Address, AddressPayload, Level, Profile } from '@/types/shop'
+import type { AccountDeletion, Address, AddressPayload, Level, Profile } from '@/types/shop'
 
 export const memberApi = {
+  requestAccountDeletion(): Promise<AccountDeletion> {
+    return request<AccountDeletion>({ url: '/api/member/account-deletion', method: 'POST' })
+  },
   profile(): Promise<Profile> {
     return request<Profile>({ url: '/api/member/profile' })
   },

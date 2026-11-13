@@ -17,7 +17,7 @@
     }
   },
   "mp-weixin": {
-    "appid": "",
+    "appid": "__WECHAT_MP_APPID__",
     "setting": {
       "urlCheck": false,
       "es6": true,

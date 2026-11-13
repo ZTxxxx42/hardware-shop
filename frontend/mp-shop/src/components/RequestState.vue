@@ -30,7 +30,7 @@ withDefaults(
   align-items: center;
   justify-content: center;
   gap: 20rpx;
-  color: #7b8998;
+  color: var(--muted);
   font-size: 26rpx;
 }
 
@@ -43,7 +43,7 @@ withDefaults(
 .spinner {
   width: 40rpx;
   height: 40rpx;
-  border: 5rpx solid #dbe9f8;
+  border: 5rpx solid var(--surface-deep);
   border-top-color: var(--brand);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -65,7 +65,7 @@ withDefaults(
 }
 
 .request-state__error-text {
-  color: #7a8795;
+  color: var(--muted);
   font-size: 26rpx;
 }
 

@@ -48,7 +48,7 @@ async function changeQuantity(item: CartItem, value: number) {
 }
 
 async function removeItem(item: CartItem) {
-  const confirm = await new Promise<boolean>((resolve) => {
+  const confirmed = await new Promise<boolean>((resolve) => {
     uni.showModal({
       title: '移出商品',
       content: `确定将“${item.name}”移出购物车吗？`,
@@ -58,7 +58,7 @@ async function removeItem(item: CartItem) {
       fail: () => resolve(false),
     })
   })
-  if (!confirm) return
+  if (!confirmed) return
   busyItem.value = item.id
   try {
     await cartStore.remove(item.id)
@@ -140,179 +140,28 @@ onShow(load)
 </template>
 
 <style scoped>
-.cart-page {
-  min-height: 100vh;
-  padding-bottom: 200rpx;
-}
-
-.cart-page__body {
-  padding-bottom: 40rpx;
-}
-
-.empty-cart {
-  display: flex;
-  min-height: 560rpx;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20rpx;
-}
-
-.empty-cart__mark {
-  display: flex;
-  width: 110rpx;
-  height: 110rpx;
-  align-items: center; justify-content: center;
-  border-radius: 32rpx;
-  color: var(--brand);
-  background: var(--brand-light);
-  font-size: 48rpx;
-  font-weight: 700;
-}
-
-.empty-cart__text {
-  color: #7b8998;
-  font-size: 25rpx;
-}
-
-.empty-cart__btn {
-  min-height: 76rpx;
-  margin-top: 10rpx;
-  padding: 0 44rpx;
-}
-
-.cart-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.cart-line {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 22rpx;
-}
-
-.cart-line__art {
-  display: flex;
-  width: 180rpx;
-  height: 160rpx;
-  flex: 0 0 auto;
-  align-items: center; justify-content: center;
-  overflow: hidden;
-  border-radius: 16rpx;
-  background: radial-gradient(circle at 50% 42%, #ffffff 20%, #f0f4f8 80%);
-}
-
-.cart-line__info {
-  display: flex;
-  min-width: 0;
-  width: calc(100% - 202rpx);
-  flex-direction: column;
-  padding-left: 22rpx;
-}
-
-.cart-line__name {
-  overflow: hidden;
-  color: #26384c;
-  font-size: 27rpx;
-  font-weight: 650;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.cart-line__model {
-  margin-top: 8rpx;
-  color: #8a97a5;
-  font-size: 21rpx;
-}
-
-.cart-line__price {
-  margin-top: 10rpx;
-  color: var(--price);
-  font-family: Arial, sans-serif;
-  font-size: 30rpx;
-  font-weight: 700;
-}
-
-.cart-line__tools {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16rpx;
-  margin-top: 20rpx;
-  padding-top: 20rpx;
-  border-top: 1rpx solid #f0f3f7;
-}
-
-.cart-line__foot {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8rpx;
-}
-
-.cart-line__subtotal {
-  color: var(--price);
-  font-family: Arial, sans-serif;
-  font-size: 26rpx;
-  font-weight: 600;
-}
-
-.cart-line__remove {
-  color: #95a2af;
-  font-size: 22rpx;
-}
-
-.cart-bar {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
-  background: #ffffff;
-  box-shadow: 0 -8rpx 26rpx rgb(30 64 97 / 8%);
-}
-
-.cart-bar__summary {
-  min-width: 0;
-  flex: 1;
-}
-
-.cart-bar__total {
-  display: flex;
-  align-items: baseline;
-  gap: 12rpx;
-}
-
-.cart-bar__total-label {
-  color: #3c4e61;
-  font-size: 26rpx;
-  font-weight: 600;
-}
-
-.cart-bar__total-price {
-  color: var(--price);
-  font-family: Arial, sans-serif;
-  font-size: 42rpx;
-  font-weight: 700;
-}
-
-.cart-bar__detail {
-  display: block;
-  margin-top: 2rpx;
-  color: #a0abb7;
-  font-size: 20rpx;
-}
-
-.cart-bar__btn {
-  min-height: 84rpx;
-  padding: 0 52rpx;
-  border-radius: 42rpx;
-}
+.cart-page { min-height: 100vh; padding-bottom: 200rpx; }
+.cart-page__body { padding-bottom: 40rpx; }
+.empty-cart { display: flex; min-height: 560rpx; flex-direction: column; align-items: center; justify-content: center; gap: 20rpx; }
+.empty-cart__mark { display: flex; width: 110rpx; height: 110rpx; align-items: center; justify-content: center; border-radius: 32rpx; color: var(--brand-dark); background: var(--brand-light); font-size: 48rpx; font-weight: 700; }
+.empty-cart__text { color: var(--muted); font-size: 25rpx; }
+.empty-cart__btn { min-height: 76rpx; margin-top: 10rpx; padding: 0 44rpx; }
+.cart-list { display: flex; flex-direction: column; gap: 20rpx; }
+.cart-line { display: flex; flex-wrap: wrap; padding: 22rpx; }
+.cart-line__art { display: flex; width: 180rpx; height: 160rpx; flex: 0 0 auto; align-items: center; justify-content: center; overflow: hidden; border-radius: 16rpx; background: radial-gradient(circle at 50% 42%, #fffdf8 20%, #f2ede2 80%); }
+.cart-line__info { display: flex; min-width: 0; width: calc(100% - 202rpx); flex-direction: column; padding-left: 22rpx; }
+.cart-line__name { overflow: hidden; color: var(--ink-soft); font-size: 27rpx; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.cart-line__model { margin-top: 8rpx; color: var(--muted); font-size: 21rpx; }
+.cart-line__price { margin-top: 10rpx; color: var(--price); font-family: Arial, sans-serif; font-size: 30rpx; font-weight: 700; }
+.cart-line__tools { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 16rpx; margin-top: 20rpx; padding-top: 20rpx; border-top: 1rpx solid var(--line); }
+.cart-line__foot { display: flex; flex-direction: column; align-items: flex-end; gap: 8rpx; }
+.cart-line__subtotal { color: var(--price); font-family: Arial, sans-serif; font-size: 26rpx; font-weight: 600; }
+.cart-line__remove { color: var(--muted); font-size: 22rpx; }
+.cart-bar { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; display: flex; align-items: center; gap: 24rpx; padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom)); background: var(--white); border-top: 1rpx solid var(--line); box-shadow: 0 -8rpx 26rpx rgb(60 48 32 / 8%); }
+.cart-bar__summary { min-width: 0; flex: 1; }
+.cart-bar__total { display: flex; align-items: baseline; gap: 12rpx; }
+.cart-bar__total-label { color: var(--ink-soft); font-size: 26rpx; font-weight: 600; }
+.cart-bar__total-price { color: var(--price); font-family: Arial, sans-serif; font-size: 42rpx; font-weight: 700; }
+.cart-bar__detail { display: block; margin-top: 2rpx; color: var(--muted); font-size: 20rpx; }
+.cart-bar__btn { min-height: 84rpx; padding: 0 52rpx; border-radius: 42rpx; }
 </style>
