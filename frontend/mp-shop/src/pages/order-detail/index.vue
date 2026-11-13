@@ -197,13 +197,13 @@ onLoad((options) => {
 .order-detail-page { padding-bottom: 56rpx; }
 .status-card { margin-top: 12rpx; padding: 26rpx 28rpx; border-top: 5rpx solid var(--brand); background: var(--brand-deep); color: var(--white); }
 .status-card__head { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; }
-.status-card__date { color: #d6d1c7; font-size: 21rpx; }
-.status-card__no { display: block; margin-top: 16rpx; color: #ded9d0; font-family: Arial, sans-serif; font-size: 23rpx; letter-spacing: 0.02em; }
+.status-card__date { color: #b9c9d8; font-size: 21rpx; }
+.status-card__no { display: block; margin-top: 16rpx; color: #c9d8e6; font-family: Arial, sans-serif; font-size: 23rpx; letter-spacing: 0.02em; }
 .status-tag { padding: 7rpx 18rpx; border-radius: 10rpx; font-size: 22rpx; font-weight: 600; }
 .status-tag.is-warning { color: #2c1c0e; background: var(--warning); }
-.status-tag.is-primary { color: #2c1c0e; background: var(--brand); }
+.status-tag.is-primary { color: #ffffff; background: var(--brand); }
 .status-tag.is-success { color: #0e3522; background: #9fd4b1; }
-.status-tag.is-info { color: #e8e5df; background: #4c4e48; }
+.status-tag.is-info { color: #e6eef5; background: #3d5166; }
 .detail-block { margin-top: 22rpx; padding: 28rpx; }
 .detail-block__title { margin-bottom: 18rpx; font-size: 30rpx; font-weight: 700; }
 .detail-block__text { display: block; color: var(--ink-soft); font-size: 24rpx; line-height: 1.8; }

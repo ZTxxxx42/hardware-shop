@@ -154,7 +154,7 @@ onLoad((options) => {
 </template>
 
 <style scoped>
-.detail-art { height: 520rpx; padding: 48rpx; background: radial-gradient(circle at 50% 42%, #fffdf8 20%, #f2ede2 82%); }
+.detail-art { height: 520rpx; padding: 48rpx; background: radial-gradient(circle at 50% 42%, #ffffff 20%, #eef3f8 82%); }
 .detail-card { margin-top: 24rpx; padding: 30rpx 28rpx; }
 .detail-card__top { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
 .status-tag { padding: 6rpx 18rpx; border-radius: 10rpx; color: var(--muted); background: var(--surface-deep); font-size: 20rpx; }

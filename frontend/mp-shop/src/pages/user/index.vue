@@ -87,7 +87,7 @@ async function requestAccountDeletion() {
       title: '申请账号注销',
       content: '提交后仅生成注销申请，账号不会立即删除。平台将按流程核验并处理，确定继续吗？',
       confirmText: '提交申请',
-      confirmColor: '#c8521f',
+      confirmColor: '#1a6fd6',
       cancelText: '再想想',
       success: (result) => resolve(result.confirm),
       fail: () => resolve(false),
@@ -187,22 +187,22 @@ onShow(loadProfile)
 <style scoped>
 .user-page { padding-top: 32rpx; }
 .guest-card { display: flex; flex-direction: column; align-items: flex-start; padding: 44rpx 36rpx; border-top: 6rpx solid var(--brand); background: var(--brand-deep); color: var(--white); }
-.guest-card .eyebrow { color: #d6d1c7; }
+.guest-card .eyebrow { color: #b9c9d8; }
 .guest-card__avatar { display: flex; width: 112rpx; height: 112rpx; align-items: center; justify-content: center; margin-bottom: 28rpx; border-radius: 28rpx; color: var(--brand-deep); background: var(--brand); font-size: 48rpx; font-weight: 800; }
 .guest-card__title { margin-top: 12rpx; font-size: 38rpx; font-weight: 750; }
-.guest-card__subtitle { margin-top: 12rpx; color: #d6d1c7; font-size: 24rpx; }
+.guest-card__subtitle { margin-top: 12rpx; color: #b9c9d8; font-size: 24rpx; }
 .guest-card__btn { min-height: 80rpx; margin-top: 30rpx; padding: 0 44rpx; }
 .profile-loading, .profile-error { padding: 80rpx 0; color: var(--muted); font-size: 24rpx; text-align: center; }
 .profile-loading__line { width: 56rpx; height: 5rpx; margin: 0 auto 18rpx; background: var(--brand); }
 .profile-card { display: flex; align-items: center; gap: 24rpx; padding: 34rpx 28rpx; border-top: 5rpx solid var(--brand); color: var(--white); background: var(--brand-deep); }
-.profile-card__avatar { display: flex; width: 108rpx; height: 108rpx; flex: 0 0 auto; align-items: center; justify-content: center; border: 1rpx solid #625d54; border-radius: 26rpx; color: var(--white); background: #353630; font-size: 46rpx; font-weight: 700; }
+.profile-card__avatar { display: flex; width: 108rpx; height: 108rpx; flex: 0 0 auto; align-items: center; justify-content: center; border: 1rpx solid #3d5166; border-radius: 26rpx; color: var(--white); background: #26384c; font-size: 46rpx; font-weight: 700; }
 .profile-card__info { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 8rpx; }
 .profile-card__name { overflow: hidden; font-size: 34rpx; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
 .profile-card__tags { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.level-tag { padding: 5rpx 14rpx; border-radius: 8rpx; color: #ffddc7; background: #5a3b29; font-size: 20rpx; }
-.level-tag--ghost { color: #ded9d0; background: #454640; }
-.profile-card__id { color: #bdb8af; font-family: Arial, sans-serif; font-size: 21rpx; }
-.profile-card__logout { flex: 0 0 auto; padding: 12rpx 18rpx; border: 1rpx solid #625d54; border-radius: 10rpx; color: #ded9d0; font-size: 22rpx; }
+.level-tag { padding: 5rpx 14rpx; border-radius: 8rpx; color: #bfd9ff; background: #1b4a80; font-size: 20rpx; }
+.level-tag--ghost { color: #c9d8e6; background: #2f455c; }
+.profile-card__id { color: #9fb0c3; font-family: Arial, sans-serif; font-size: 21rpx; }
+.profile-card__logout { flex: 0 0 auto; padding: 12rpx 18rpx; border: 1rpx solid #3d5166; border-radius: 10rpx; color: #c9d8e6; font-size: 22rpx; }
 .profile-grid { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 20rpx; }
 .profile-item { display: flex; width: calc(50% - 10rpx); flex-direction: column; gap: 8rpx; margin-bottom: 20rpx; padding: 24rpx; }
 .profile-item__label { color: var(--muted); font-size: 21rpx; }

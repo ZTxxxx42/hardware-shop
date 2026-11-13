@@ -156,9 +156,9 @@ onLoad((options) => {
 .login-brand::after { content: ''; position: absolute; right: -30rpx; bottom: 0; width: 160rpx; height: 10rpx; background: var(--brand); }
 .login-brand__mark { width: 82rpx; height: 90rpx; margin-bottom: 28rpx; }
 .login-brand__mark image { width: 100%; height: 100%; }
-.login-brand__eyebrow { display: block; color: #d6d1c7; font-family: Arial, sans-serif; font-size: 20rpx; letter-spacing: 0.14em; }
+.login-brand__eyebrow { display: block; color: #b9c9d8; font-family: Arial, sans-serif; font-size: 20rpx; letter-spacing: 0.14em; }
 .login-brand__title { margin-top: 10rpx; font-size: 52rpx; font-weight: 800; letter-spacing: 0.06em; }
-.login-brand__subtitle { display: block; margin-top: 14rpx; color: #d6d1c7; font-size: 24rpx; }
+.login-brand__subtitle { display: block; margin-top: 14rpx; color: #b9c9d8; font-size: 24rpx; }
 .login-card { padding: 36rpx; border: 1rpx solid var(--line); border-top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); background: var(--white); }
 .login-wechat { width: 100%; min-height: 92rpx; }
 .login-wechat__mark { display: inline-flex; width: 40rpx; height: 40rpx; align-items: center; justify-content: center; border: 1rpx solid rgb(255 255 255 / 55%); border-radius: 50%; font-size: 21rpx; }

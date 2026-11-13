@@ -19,21 +19,21 @@ onLaunch(() => {
 
 <style>
 page {
-  --brand: #c8521f;
-  --brand-dark: #9a3c16;
-  --brand-deep: #23241f;
-  --brand-ink: #1c1d1a;
-  --brand-light: #f9e7da;
-  --ink: #1f201d;
-  --ink-soft: #3c3e37;
-  --muted: #7a7a70;
-  --placeholder: #a9a79d;
-  --line: #e7e1d6;
-  --line-dark: #d5cdbd;
-  --surface: #f6f2ea;
-  --surface-deep: #eee9df;
-  --white: #fffdf8;
-  --price: #c8521f;
+  --brand: #1a6fd6;
+  --brand-dark: #0c56ad;
+  --brand-deep: #102b49;
+  --brand-ink: #172f49;
+  --brand-light: #eaf3ff;
+  --ink: #172434;
+  --ink-soft: #3c4e61;
+  --muted: #718094;
+  --placeholder: #a0abb7;
+  --line: #e6ecf2;
+  --line-dark: #d4deea;
+  --surface: #f5f8fb;
+  --surface-deep: #eaf0f6;
+  --white: #ffffff;
+  --price: #e45b32;
   --success: #1d7a44;
   --success-light: #e4f4ea;
   --warning: #c98a2e;
@@ -43,8 +43,8 @@ page {
   --radius-sm: 12rpx;
   --radius-md: 20rpx;
   --radius-lg: 28rpx;
-  background: #f6f2ea;
-  color: #1f201d;
+  background: #f5f8fb;
+  color: #172434;
   font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
   font-size: 28rpx;
   line-height: 1.6;
@@ -70,7 +70,7 @@ button::after {
 }
 
 input, textarea {
-  color: #1f201d;
+  color: #172434;
 }
 
 .page-shell {
@@ -121,7 +121,7 @@ input, textarea {
   border: 1rpx solid var(--line);
   border-radius: var(--radius-md);
   background: var(--white);
-  box-shadow: 0 10rpx 30rpx rgb(60 48 32 / 5%);
+  box-shadow: 0 10rpx 30rpx rgb(27 62 96 / 5%);
 }
 
 .section-heading {
@@ -173,9 +173,9 @@ input, textarea {
 }
 
 .btn-primary {
-  color: #fffdf8;
+  color: #ffffff;
   background: var(--brand);
-  box-shadow: 0 12rpx 26rpx rgb(154 60 22 / 20%);
+  box-shadow: 0 12rpx 26rpx rgb(12 86 173 / 22%);
 }
 
 .btn-primary:active {
@@ -184,7 +184,7 @@ input, textarea {
 
 .btn-ghost {
   color: var(--brand-dark);
-  border: 1rpx solid #e7c2a8;
+  border: 1rpx solid #bfd6f3;
   background: var(--brand-light);
 }
 
@@ -195,7 +195,7 @@ input, textarea {
 }
 
 .btn[disabled] {
-  color: #b7b2a7;
+  color: #aab6c4;
   background: var(--surface-deep);
   box-shadow: none;
 }
@@ -204,6 +204,6 @@ input, textarea {
   background: var(--white);
   border: 1rpx solid var(--line);
   border-radius: var(--radius-md);
-  box-shadow: 0 8rpx 26rpx rgb(60 48 32 / 4%);
+  box-shadow: 0 8rpx 26rpx rgb(27 62 96 / 4%);
 }
 </style>

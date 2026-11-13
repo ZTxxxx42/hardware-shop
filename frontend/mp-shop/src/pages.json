@@ -86,16 +86,16 @@
     }
   ],
   "globalStyle": {
-    "navigationBarBackgroundColor": "#fffdf8",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "恒泰五金",
-    "backgroundColor": "#f6f2ea",
+    "backgroundColor": "#f5f8fb",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#8a877d",
-    "selectedColor": "#c8521f",
-    "backgroundColor": "#fffdf8",
+    "color": "#7b8998",
+    "selectedColor": "#1a6fd6",
+    "backgroundColor": "#ffffff",
     "borderStyle": "white",
     "list": [
       {

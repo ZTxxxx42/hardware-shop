@@ -61,14 +61,14 @@ async function addToCart() {
   border: 1rpx solid var(--line);
   border-radius: var(--radius-md);
   background: var(--white);
-  box-shadow: 0 8rpx 26rpx rgb(60 48 32 / 5%);
+  box-shadow: 0 8rpx 26rpx rgb(27 62 96 / 5%);
 }
 
 .product-card__art {
   position: relative;
   height: 300rpx;
   padding: 28rpx 20rpx 8rpx;
-  background: radial-gradient(circle at 50% 44%, #fffdf8 20%, #f2ede2 78%);
+  background: radial-gradient(circle at 50% 44%, #ffffff 20%, #eef3f8 78%);
 }
 
 .product-card__tag {
@@ -143,7 +143,7 @@ async function addToCart() {
   background: var(--brand);
   font-size: 34rpx;
   line-height: 1;
-  box-shadow: 0 8rpx 18rpx rgb(154 60 22 / 22%);
+  box-shadow: 0 8rpx 18rpx rgb(12 86 173 / 22%);
 }
 
 .product-card__cart:active {
@@ -151,7 +151,7 @@ async function addToCart() {
 }
 
 .product-card__cart.is-disabled {
-  color: #b7b2a7;
+  color: #aab6c4;
   background: var(--surface-deep);
   box-shadow: none;
 }

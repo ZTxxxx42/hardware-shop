@@ -142,17 +142,17 @@ onShow(loadHome)
 .hero { position: relative; padding: 44rpx 36rpx 76rpx; overflow: hidden; background: var(--brand-deep); color: var(--white); }
 .hero__rail { position: absolute; top: 0; left: 0; bottom: 0; width: 10rpx; background: var(--brand); }
 .hero__content { position: relative; }
-.hero__eyebrow { display: block; color: #d6d1c7; font-family: Arial, sans-serif; font-size: 20rpx; letter-spacing: 0.16em; }
+.hero__eyebrow { display: block; color: #b9c9d8; font-family: Arial, sans-serif; font-size: 20rpx; letter-spacing: 0.16em; }
 .hero__title { margin-top: 20rpx; font-size: 58rpx; font-weight: 800; line-height: 1.2; letter-spacing: 0.03em; }
 .hero__accent { color: var(--brand); }
-.hero__subtitle { display: block; margin-top: 18rpx; color: #d6d1c7; font-size: 25rpx; }
-.hero__meta { display: flex; gap: 30rpx; margin-top: 34rpx; padding: 22rpx 0; border-top: 1rpx solid #494a44; border-bottom: 1rpx solid #494a44; }
+.hero__subtitle { display: block; margin-top: 18rpx; color: #b9c9d8; font-size: 25rpx; }
+.hero__meta { display: flex; gap: 30rpx; margin-top: 34rpx; padding: 22rpx 0; border-top: 1rpx solid #2a4a6b; border-bottom: 1rpx solid #2a4a6b; }
 .hero__meta-item { display: flex; flex-direction: column; gap: 4rpx; }
 .hero__meta-value { color: var(--white); font-size: 27rpx; font-weight: 700; }
-.hero__meta-label { color: #a8a49a; font-size: 19rpx; }
+.hero__meta-label { color: #8fa6bd; font-size: 19rpx; }
 .hero__cta { display: inline-flex; align-items: center; min-height: 68rpx; margin-top: 34rpx; padding: 0 34rpx; color: var(--white); background: var(--brand); font-size: 26rpx; font-weight: 600; }
 .home__body { padding-top: 0; }
-.search-pill { display: flex; align-items: center; gap: 14rpx; height: 88rpx; margin-top: -44rpx; padding: 0 30rpx; border: 1rpx solid var(--line); border-radius: 44rpx; background: var(--white); box-shadow: 0 14rpx 34rpx rgb(60 48 32 / 12%); }
+.search-pill { display: flex; align-items: center; gap: 14rpx; height: 88rpx; margin-top: -44rpx; padding: 0 30rpx; border: 1rpx solid var(--line); border-radius: 44rpx; background: var(--white); box-shadow: 0 14rpx 34rpx rgb(27 62 96 / 12%); }
 .search-pill__icon { color: var(--brand); font-size: 40rpx; }
 .search-pill__placeholder { color: var(--placeholder); font-size: 26rpx; }
 .category-grid { display: flex; flex-wrap: wrap; }

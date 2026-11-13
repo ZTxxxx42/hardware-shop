@@ -68,7 +68,7 @@ onShow(loadCategories)
 <style scoped>
 .category-heading { padding: 10rpx 0 26rpx; }
 .category-list { display: flex; flex-direction: column; gap: 18rpx; }
-.category-card { display: flex; align-items: center; gap: 24rpx; padding: 26rpx 28rpx; border: 1rpx solid var(--line); border-left: 5rpx solid transparent; border-radius: var(--radius-md); background: var(--white); box-shadow: 0 8rpx 26rpx rgb(60 48 32 / 4%); }
+.category-card { display: flex; align-items: center; gap: 24rpx; padding: 26rpx 28rpx; border: 1rpx solid var(--line); border-left: 5rpx solid transparent; border-radius: var(--radius-md); background: var(--white); box-shadow: 0 8rpx 26rpx rgb(27 62 96 / 4%); }
 .category-card:active { border-color: var(--line-dark); border-left-color: var(--brand); }
 .category-card__icon { width: 96rpx; height: 96rpx; flex: 0 0 auto; }
 .category-card__body { min-width: 0; flex: 1; }

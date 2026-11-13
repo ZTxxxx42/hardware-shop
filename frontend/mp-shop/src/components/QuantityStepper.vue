@@ -60,7 +60,7 @@ function change(delta: number) {
 }
 
 .stepper__btn.is-disabled {
-  color: #c6c1b7;
+  color: #aab6c4;
   background: var(--surface-deep);
 }
 </style>

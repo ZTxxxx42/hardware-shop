@@ -75,7 +75,7 @@ const icons = {
 
 const colors = {
   gray: [147, 160, 173],
-  blue: [200, 82, 31],
+  active: [26, 111, 214],
 }
 
 function render(pred, color) {
@@ -104,7 +104,7 @@ function render(pred, color) {
 
 for (const [name, pred] of Object.entries(icons)) {
   writeFileSync(join(outDir, `${name}.png`), render(pred, colors.gray))
-  writeFileSync(join(outDir, `${name}-active.png`), render(pred, colors.blue))
+  writeFileSync(join(outDir, `${name}-active.png`), render(pred, colors.active))
 }
 
 console.log('tabbar icons written to', outDir)
