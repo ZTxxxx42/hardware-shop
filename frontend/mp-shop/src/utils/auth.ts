@@ -1,11 +1,13 @@
 import { useUserStore } from '@/store/user'
 
-export function ensureLogin(redirect?: string): boolean {
+export function ensureLogin(): boolean {
   const userStore = useUserStore()
-  if (userStore.isLoggedIn) return true
+  return userStore.isLoggedIn
+}
+
+export function goLogin(redirect?: string): void {
   const url = redirect
     ? `/pages/login/index?redirect=${encodeURIComponent(redirect)}`
     : '/pages/login/index'
   uni.navigateTo({ url })
-  return false
 }

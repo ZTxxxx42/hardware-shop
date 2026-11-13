@@ -5,7 +5,7 @@ import { catalogApi } from '@/api/catalog'
 import { getErrorMessage } from '@/api/http'
 import type { ProductDetail } from '@/types/catalog'
 import { formatPrice, getProductStatus } from '@/utils/catalog'
-import { ensureLogin } from '@/utils/auth'
+import { ensureLogin, goLogin } from '@/utils/auth'
 import { useCartStore } from '@/store/cart'
 import ProductArtwork from '@/components/ProductArtwork.vue'
 import QuantityStepper from '@/components/QuantityStepper.vue'
@@ -44,7 +44,21 @@ async function addToCart(goCartAfter: boolean) {
     uni.showToast({ title: '该商品暂不可售', icon: 'none' })
     return
   }
-  if (!ensureLogin()) return
+  if (!ensureLogin()) {
+    const ok = await new Promise<boolean>((resolve) => {
+      uni.showModal({
+        title: '请先登录',
+        content: '登录后才能加入购物车',
+        confirmText: '去登录',
+        cancelText: '取消',
+        success: (res) => resolve(res.confirm),
+        fail: () => resolve(false),
+      })
+    })
+    if (!ok) return
+    goLogin(`/pages/product-detail/index?id=${current.id}`)
+    return
+  }
   adding.value = true
   try {
     await cartStore.add(current.id, quantity.value)

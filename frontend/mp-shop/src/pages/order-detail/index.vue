@@ -7,11 +7,13 @@ import type { OrderDetail } from '@/types/shop'
 import { formatPrice, isZeroAmount } from '@/utils/catalog'
 import { ensureLogin } from '@/utils/auth'
 import RequestState from '@/components/RequestState.vue'
+import LoginPrompt from '@/components/LoginPrompt.vue'
 import LogisticsCard from '@/components/LogisticsCard.vue'
 
 const detail = ref<OrderDetail | null>(null)
 const loading = ref(true)
 const error = ref('')
+const needsLogin = ref(false)
 const actionLoading = ref(false)
 const orderId = ref<number | null>(null)
 
@@ -107,15 +109,26 @@ onLoad((options) => {
   const raw = options?.id
   const id = typeof raw === 'string' && raw ? Number(raw) : NaN
   orderId.value = Number.isInteger(id) && id > 0 ? id : null
-  if (!ensureLogin('/pages/orders/index')) return
+  if (!ensureLogin()) {
+    needsLogin.value = true
+    loading.value = false
+    error.value = ''
+    return
+  }
+  needsLogin.value = false
   void loadDetail()
 })
 </script>
 
 <template>
   <view class="page-pad order-detail-page">
+    <LoginPrompt
+      v-if="needsLogin"
+      title="登录后查看订单详情"
+      :redirect="orderId ? `/pages/order-detail/index?id=${orderId}` : '/pages/orders/index'"
+    />
     <RequestState
-      v-if="loading || error || !detail"
+      v-else-if="loading || error || !detail"
       :loading="loading"
       :error="error"
       :empty="!loading && !error"

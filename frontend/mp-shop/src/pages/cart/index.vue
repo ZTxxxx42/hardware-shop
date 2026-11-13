@@ -9,17 +9,22 @@ import type { CartItem } from '@/types/shop'
 import ProductArtwork from '@/components/ProductArtwork.vue'
 import QuantityStepper from '@/components/QuantityStepper.vue'
 import RequestState from '@/components/RequestState.vue'
+import LoginPrompt from '@/components/LoginPrompt.vue'
 
 const cartStore = useCartStore()
 const loading = ref(true)
 const error = ref('')
+const needsLogin = ref(false)
 const busyItem = ref<number | null>(null)
 
 async function load() {
-  if (!ensureLogin('/pages/cart/index')) {
+  if (!ensureLogin()) {
+    needsLogin.value = true
     loading.value = false
+    error.value = ''
     return
   }
+  needsLogin.value = false
   loading.value = true
   error.value = ''
   try {
@@ -85,8 +90,13 @@ onShow(load)
 <template>
   <view class="cart-page">
     <view class="page-pad cart-page__body">
+      <LoginPrompt
+        v-if="needsLogin"
+        title="登录后查看购物车"
+        :redirect="'/pages/cart/index'"
+      />
       <RequestState
-        v-if="loading || error"
+        v-else-if="loading || error"
         :loading="loading"
         :error="error"
         loading-text="正在加载购物车..."

@@ -10,6 +10,7 @@ import { ensureLogin } from '@/utils/auth'
 import type { Address } from '@/types/shop'
 import ProductArtwork from '@/components/ProductArtwork.vue'
 import RequestState from '@/components/RequestState.vue'
+import LoginPrompt from '@/components/LoginPrompt.vue'
 
 const cartStore = useCartStore()
 const addresses = ref<Address[]>([])
@@ -20,6 +21,7 @@ const cartError = ref('')
 const selectedAddressId = ref<number | null>(null)
 const remark = ref('')
 const submitting = ref(false)
+const needsLogin = ref(false)
 
 const selectedAddress = computed(() => addresses.value.find((item) => item.id === selectedAddressId.value) ?? null)
 
@@ -77,7 +79,13 @@ async function submitOrder() {
 }
 
 onShow(() => {
-  if (!ensureLogin('/pages/checkout/index')) return
+  if (!ensureLogin()) {
+    needsLogin.value = true
+    cartLoading.value = false
+    cartError.value = ''
+    return
+  }
+  needsLogin.value = false
   void loadCart()
   void loadAddresses()
 })
@@ -91,8 +99,13 @@ onShow(() => {
       <text class="page-subtitle">选择收货地址并确认订单，提交后生成待支付订单</text>
     </view>
 
+    <LoginPrompt
+      v-if="needsLogin"
+      title="登录后结算下单"
+      :redirect="'/pages/checkout/index'"
+    />
     <RequestState
-      v-if="cartLoading || cartError"
+      v-else-if="cartLoading || cartError"
       :loading="cartLoading"
       :error="cartError"
       loading-text="正在加载订单信息..."

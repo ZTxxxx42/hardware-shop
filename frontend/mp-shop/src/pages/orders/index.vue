@@ -7,12 +7,14 @@ import type { OrderBrief } from '@/types/shop'
 import { formatPrice } from '@/utils/catalog'
 import { ensureLogin } from '@/utils/auth'
 import RequestState from '@/components/RequestState.vue'
+import LoginPrompt from '@/components/LoginPrompt.vue'
 
 type StatusTone = 'warning' | 'primary' | 'success' | 'info'
 
 const orders = ref<OrderBrief[]>([])
 const loading = ref(true)
 const error = ref('')
+const needsLogin = ref(false)
 const actionOrderId = ref<number | null>(null)
 
 const statusMap: Record<string, { label: string; tone: StatusTone }> = {
@@ -102,7 +104,13 @@ function goPay() {
 }
 
 onShow(() => {
-  if (!ensureLogin('/pages/orders/index')) return
+  if (!ensureLogin()) {
+    needsLogin.value = true
+    loading.value = false
+    error.value = ''
+    return
+  }
+  needsLogin.value = false
   void loadOrders()
 })
 </script>
@@ -115,8 +123,13 @@ onShow(() => {
       <text class="page-subtitle">查看待支付、已支付、已发货及已完成订单</text>
     </view>
 
+    <LoginPrompt
+      v-if="needsLogin"
+      title="登录后查看订单"
+      :redirect="'/pages/orders/index'"
+    />
     <RequestState
-      v-if="loading || error || orders.length === 0"
+      v-else-if="loading || error || orders.length === 0"
       :loading="loading"
       :error="error"
       :empty="!loading && !error"

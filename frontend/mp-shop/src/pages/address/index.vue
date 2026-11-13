@@ -6,10 +6,12 @@ import { getErrorMessage } from '@/api/http'
 import { ensureLogin } from '@/utils/auth'
 import type { Address } from '@/types/shop'
 import RequestState from '@/components/RequestState.vue'
+import LoginPrompt from '@/components/LoginPrompt.vue'
 
 const addresses = ref<Address[]>([])
 const loading = ref(true)
 const error = ref('')
+const needsLogin = ref(false)
 const formOpen = ref(false)
 const submitting = ref(false)
 const editingId = ref<number | null>(null)
@@ -119,7 +121,13 @@ async function removeAddress(address: Address) {
 }
 
 onShow(() => {
-  if (!ensureLogin('/pages/address/index')) return
+  if (!ensureLogin()) {
+    needsLogin.value = true
+    loading.value = false
+    error.value = ''
+    return
+  }
+  needsLogin.value = false
   void loadAddresses()
 })
 </script>
@@ -133,12 +141,17 @@ onShow(() => {
           <view class="page-title">地址管理</view>
           <text class="page-subtitle">维护收货人、联系电话与收货地址</text>
         </view>
-        <button class="btn btn-primary page-heading__add" @tap="openCreate">新增地址</button>
+        <button v-if="!needsLogin" class="btn btn-primary page-heading__add" @tap="openCreate">新增地址</button>
       </view>
     </view>
 
+    <LoginPrompt
+      v-if="needsLogin"
+      title="登录后管理收货地址"
+      :redirect="'/pages/address/index'"
+    />
     <RequestState
-      v-if="loading || error || addresses.length === 0"
+      v-else-if="loading || error || addresses.length === 0"
       :loading="loading"
       :error="error"
       :empty="!loading && !error"

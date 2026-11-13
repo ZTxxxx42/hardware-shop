@@ -2,7 +2,7 @@
 import type { Product } from '@/types/catalog'
 import { formatPrice } from '@/utils/catalog'
 import { getErrorMessage } from '@/api/http'
-import { ensureLogin } from '@/utils/auth'
+import { ensureLogin, goLogin } from '@/utils/auth'
 import { useCartStore } from '@/store/cart'
 import ProductArtwork from './ProductArtwork.vue'
 
@@ -14,12 +14,30 @@ function goDetail() {
   uni.navigateTo({ url: `/pages/product-detail/index?id=${props.product.id}` })
 }
 
+function askLogin(): Promise<boolean> {
+  return new Promise((resolve) => {
+    uni.showModal({
+      title: '请先登录',
+      content: '登录后才能加入购物车',
+      confirmText: '去登录',
+      cancelText: '取消',
+      success: (res) => resolve(res.confirm),
+      fail: () => resolve(false),
+    })
+  })
+}
+
 async function addToCart() {
   if (props.product.status !== 'ON_SALE') {
     uni.showToast({ title: '该商品暂不可售', icon: 'none' })
     return
   }
-  if (!ensureLogin()) return
+  if (!ensureLogin()) {
+    const ok = await askLogin()
+    if (!ok) return
+    goLogin(`/pages/product-detail/index?id=${props.product.id}`)
+    return
+  }
   try {
     await cartStore.add(props.product.id, 1)
     uni.showToast({ title: '已加入购物车', icon: 'success' })
